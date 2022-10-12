@@ -1,5 +1,7 @@
 package model;
 
+import model.Comic;
+
 import java.util.Collection;
 
 public class Series {

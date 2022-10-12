@@ -29,8 +29,8 @@ public class App {
                 running = false;
             }
             else{
-                Command currCommand = new Command(commandType, input.next(), db.getComiccollection());
-                view.handle(currCommand.run());
+                //Command currCommand = new Command(commandType, input.next(), db.getComiccollection());
+                //view.handle(currCommand.run());
             }
         }
     }
