@@ -5,51 +5,158 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Database {
-    String series, storytitle, publisher, creator;
-        String issuenumber;
-        String releasedate;
-        public Database(String Series, String Storytitle, String Publisher,String Creator, String Issuenumber, String Releasedate){
-            this.series = Series;
-            this.storytitle = Storytitle;
-            this.publisher = Publisher;
-            this.creator = Creator;
-            this.issuenumber = Issuenumber;
-            this.releasedate = Releasedate;
-        }
-    public static void main(String[] args) {
-        Database db = new Database(null, null, null, null, null, null);
-        String path = "swen262/comics.csv";
+
+    private Collection<Series> comiccollection;
+
+    public Database(String path){
+        init(path);
+    }
+
+    private void init(String path) {
+
+        //TODO parse the database file into a collection of series. A collection of series is a collection of Comicbooks with a series name
+        this.comiccollection = new ArrayList<>();
+
+        Comic c1 = new Comic("Mazing Man", "1", "test1", "issue1", "date1");
+        Comic c2 = new Comic("Mazing Man", "2", "test2", "issue2", "date2");
+        Comic c3 = new Comic("Mazing Man", "3", "test3", "issue3", "date3");
+        Collection<Comic> cc1 = new ArrayList<>();
+        cc1.add(c1);
+        cc1.add(c2);
+        cc1.add(c3);
+        Series s1 = new Series("Mazing Man", cc1);
+
+        Comic c4 = new Comic("Other", "1", "test1", "issue1", "date1");
+        Comic c5 = new Comic("Other", "2", "test2", "issue2", "date2");
+        Comic c6 = new Comic("Other", "3", "test3", "issue3", "date3");
+        Collection<Comic> cc2 = new ArrayList<>();
+        cc2.add(c4);
+        cc2.add(c5);
+        cc2.add(c6);
+        Series s2 = new Series("Other", cc2);
+        this.comiccollection.add(s1);
+        this.comiccollection.add(s2);
+    }
+
+    public Collection<Series> getComiccollection() {
+        return comiccollection;
+    }
+
+    /**
+        int linenum = 0;
+
         String line = "";
-    try {
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        while((line = br.readLine()) !=null){
-            String[] values = line.split(",");
-            db.series = values[0];
-            db.issuenumber = values[1];
-            db.storytitle = values[2];
-            db.publisher = values[4];
-            db.releasedate = values[5];
-            System.out.println(db.series + " " + db.issuenumber);
-            db.creator = values[8];
+        String currentSeriesName = "";
+        Collection<Comic> currentSeries = null;
+        int lineIdx = 0;
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            while((line=br.readLine())!=null){
+                if (linenum<3){
+                    linenum+=1;
+                }
+                else{
+                    String seriesTitleget = getSeriesTitle(line);// Gets seriesTitle
+                    String[] seriesTitlegetSplit = seriesTitleget.split("::");
+                    String seriesTitle = seriesTitlegetSplit[0];
+                    System.out.println(seriesTitlegetSplit[0]+"  :  "+seriesTitlegetSplit[1]);
+                    lineIdx += Integer.parseInt(seriesTitlegetSplit[1])+1;
+                    String nLine = line.substring(lineIdx);
+                    String[] values = nLine.split(",");
+                    //System.out.println(values[0]+"   :   "+lineIdx);
+                    for (int x = 0; x<values.length; x++){
+                        System.out.println(values[x]+" place: "+x);
+                    }
+                    String issue = values[0];
+                    lineIdx += issue.length()-1;
+                    String title = getTitle(values[1]);
+                    lineIdx += title.length()-1;
+                    String description = values[2].replaceAll("\'","");
+                    lineIdx += description.length()-1;
+                    String publisher = values[3].replaceAll("\'","");
+                    lineIdx += publisher.length()-1;
+                    String releaseDateT = getDate(nLine, lineIdx);
+                    //String releaseDate = values[4].replaceAll("\'","")+", "+values[5].replaceAll("\'","");
+                    //String format = values[6].replaceAll("\'","");
+                    //String addDate = values[7].replaceAll("\'","")+", "+values[8].replaceAll("\'","");;
+                    //String iCreators = values[9].replaceAll("\'","");
+                    //String[] creators = iCreators.split("\\|");
+                    lineIdx = 0;
+                    System.out.println(releaseDateT+"  TEST");
+                    if (values[0].equals(currentSeriesName)){
+
+                    }
+                    else{
+                        if (currentSeries==null){
+                            currentSeriesName = values[0];
+                            //currentSeries.add(new Comic());
+                        }
+                        else{
+                            this.comiccollection.add(new Series(currentSeriesName, currentSeries));
+                        }
+                        currentSeriesName = values[0];
+                    }
+                    System.out.println(line);
+                }
+            }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (DateTimeParseException e){
+            e.printStackTrace();
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+        }
+        catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
     }
-    catch (IOException e){
-        e.printStackTrace();
+
+    private String getSeriesTitle(String line){
+        if (line.charAt(0) == '"'){
+            String eLine = line.substring(1);
+            int titleIdx = eLine.indexOf("\"");
+            return eLine.substring(0,titleIdx)+"::"+titleIdx;
+        }
+        else{
+            String eLine = line;
+            int titleIdx = eLine.indexOf(",");
+            return line.substring(0,titleIdx)+"::"+titleIdx;
+        }
     }
-    catch (DateTimeParseException e){
-        e.printStackTrace();
+
+    private String getTitle(String s){
+        if (s.equals("")){
+            return s;
+        }
+        else{
+            //System.out.println(s);
+            if (s.charAt(0) == '"'){
+                return s.substring(1);
+            }
+            else{
+                return s;
+            }
+        }
     }
-    catch(NullPointerException e){
-        e.printStackTrace();
-    }
-    catch(IllegalArgumentException e){
-        e.printStackTrace();
-    }   
-}
+
+    private String getDate(String s, int idx){
+        String s1 = s.substring(idx);
+        System.out.println(s1);
+        int i = s1.indexOf('"');
+        return s1.substring(0,i);
+    }**/
 
 }
+
+
 
