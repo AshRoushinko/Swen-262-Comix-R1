@@ -13,8 +13,8 @@ public class Search extends Command {
 
     private Collection<Comic> searchResult;
 
-    public Search(String type, String info, Collection<Series> db) {
-        super(type, info, db);
+    public Search(String type, String info, Collection<Series> db,Collection<Series> uc) {
+        super(type, info, db, uc);
     }
 
     @Override
@@ -31,22 +31,17 @@ public class Search extends Command {
                 Comic curr = cCollection.next();
                 if (curr.getTitle().contains(this.info)){
                     searchResult.add(curr);
-                    //show = show+"\n"+curr.toString();
                 }
             }
         }
         this.searchResult = searchResult;
-        return searchResult;
+        return this.searchResult;
     }
 
     @Override
     public Result getResult() {
-        Result sResult = new SearchResult()
-        //String show = "";
-        //Iterator<Comic> results = searchResult.iterator();
-        //while(results.hasNext()){
-
-        //}
-        return new ;
+        Result sr = new SearchResult();
+        sr.initResult(searchResult);
+        return sr;
     }
 }

@@ -12,7 +12,7 @@ public class PTUI {
      * This method handles any input from the user and sends the information to the App class. The result of the operation will be printed on the
      * screen for the user to see.
      */
-    public void handle(String infoMessage){
+    public void handleCommandSelection(String infoMessage){
         if (infoMessage.equals("1")){
             System.out.println("Search: ");
         }
@@ -44,6 +44,10 @@ public class PTUI {
         else{
             System.out.println("Invalid Entry\nPlease try again...\n");
         }
+    }
+
+    public void display(Result r){
+        System.out.println(r.toString());
     }
 
     private void init(){

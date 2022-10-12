@@ -28,9 +28,14 @@ public class App {
             if(commandType.equals("")){
                 running = false;
             }
+            else if (commandType.equals("1")){
+                String searchCriteria = input.next();
+                Command currCommand = new Search(commandType, searchCriteria, db.getComiccollection(), user.getComiccollection());
+                currCommand.run();
+                view.display(currCommand.getResult());
+            }
             else{
-                //Command currCommand = new Command(commandType, input.next(), db.getComiccollection());
-                //view.handle(currCommand.run());
+
             }
         }
     }
@@ -38,11 +43,10 @@ public class App {
     private String getCommandType(){
         Boolean firstE = true;
         String s1 = input.next();
-        System.out.println(s1);
         while (firstE){
             if (s1.equals("1")){
                 firstE = false;
-                view.handle("1");
+                view.handleCommandSelection("1");
                 return "1";
             }
             else if(s1.equals("2")){
@@ -74,7 +78,7 @@ public class App {
                 return "";
             }
             else{
-                view.handle("I");
+                view.handleCommandSelection("I");
             }
         }
         return "";

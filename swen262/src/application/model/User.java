@@ -10,5 +10,9 @@ public class User {
     public User(){
         userCollection = new ArrayList<>();
     }
-    
+
+    public Collection<Series> getComiccollection() {
+        return userCollection;
+    }
+
 }

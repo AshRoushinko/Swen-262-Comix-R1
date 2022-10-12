@@ -11,11 +11,13 @@ public abstract class Command {
     String type;
     String info;
     Collection<Series> db;
+    Collection<Series> uc;
 
-    public Command(String type, String info, Collection<Series> db){
+    public Command(String type, String info, Collection<Series> db, Collection<Series> uc){
         this.type = type;
         this.info = info;
         this.db = db;
+        this.uc = uc;
     }
 
     public abstract Collection<Comic> run();
