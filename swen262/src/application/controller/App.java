@@ -5,10 +5,13 @@ import model.User;
 import view.PTUI;
 
 import java.util.Scanner;
+import java.util.Stack;
 
 public class App {
 
     private final String filePath = "swen262/comics.csv";
+
+    private Stack commandHistory;
 
     private Database db;
     private User user;
@@ -33,6 +36,7 @@ public class App {
                 Command currCommand = new Search(commandType, searchCriteria, db.getComiccollection(), user.getComiccollection());
                 currCommand.run();
                 view.display(currCommand.getResult());
+                commandHistory.add(currCommand);
             }
             else{
 
@@ -88,6 +92,7 @@ public class App {
         db = new Database(filePath);
         view = new PTUI();
         user = new User();
+        commandHistory = new Stack<Command>();
     }
 
     public void process(){

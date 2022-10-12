@@ -14,7 +14,14 @@ public class PTUI {
      */
     public void handleCommandSelection(String infoMessage){
         if (infoMessage.equals("1")){
-            System.out.println("Search: ");
+            System.out.println("1: Exact Search - Will only show comics with a title identical to search parameters.\n" +
+                    "2: Partial Search - Will show all comics that include search parameters in title.");
+        }
+        else if(infoMessage.equals("11")){
+            System.out.println("Exact Search: ");
+        }
+        else if(infoMessage.equals("12")){
+            System.out.println("Partial Search: ");
         }
         else if(infoMessage.equals("2")){
 

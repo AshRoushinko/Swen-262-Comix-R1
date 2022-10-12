@@ -17,4 +17,8 @@ public class Series {
     public Collection<Comic> getComics() {
         return comics;
     }
+
+    public String getName(){
+        return this.name;
+    }
 }

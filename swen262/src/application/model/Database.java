@@ -16,18 +16,18 @@ public class Database {
         //TODO parse the database file into a collection of series. A collection of series is a collection of Comicbooks with a series name
         this.comiccollection = new ArrayList<>();
 
-        Comic c1 = new Comic("Mazing Man", "1", "test1", "issue1", "date1");
-        Comic c2 = new Comic("Mazing Man", "2", "test2", "issue2", "date2");
-        Comic c3 = new Comic("Mazing Man", "3", "test3", "issue3", "date3");
+        Comic c1 = new Comic("Mazing Man", "Manone", "test1", "issue1", "date1");
+        Comic c2 = new Comic("Mazing Man", "NotMan", "test2", "issue2", "date2");
+        Comic c3 = new Comic("Mazing Man", "YellowEagle", "test3", "issue3", "date3");
         Collection<Comic> cc1 = new ArrayList<>();
         cc1.add(c1);
         cc1.add(c2);
         cc1.add(c3);
         Series s1 = new Series("Mazing Man", cc1);
 
-        Comic c4 = new Comic("Other", "1", "test1", "issue1", "date1");
-        Comic c5 = new Comic("Other", "2", "test2", "issue2", "date2");
-        Comic c6 = new Comic("Other", "3", "test3", "issue3", "date3");
+        Comic c4 = new Comic("Other", "Green", "test1", "issue1", "date1");
+        Comic c5 = new Comic("Other", "Yellow", "test2", "issue2", "date2");
+        Comic c6 = new Comic("Other", "GreenBlue", "test3", "issue3", "date3");
         Collection<Comic> cc2 = new ArrayList<>();
         cc2.add(c4);
         cc2.add(c5);

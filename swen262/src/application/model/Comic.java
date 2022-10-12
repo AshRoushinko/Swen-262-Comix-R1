@@ -103,6 +103,8 @@ public class Comic {
 
     @Override
     public String toString(){
-        return "Series: "+this.series+", Volume: "+this.volume+", Issue: "+this.issue+", Title: "+this.title+", Description: "+this.description+", Publisher: "+this.publisher+", Publication Date: "+this.publicationDate+", Format: "+this.format+", Add Date: "+this.addDate+", Creators: "+this.creators;
+        return "Series: "+this.series+"\nVolume: "+this.volume+"\nIssue: "+this.issue+"\nTitle: "+this.title+"" +
+                "\nDescription: "+this.description+"\nPublisher: "+this.publisher+"\nPublication Date: "+this.publicationDate+"" +
+                "\nFormat: "+this.format+"\nAdd Date: "+this.addDate+"\nCreators: "+this.creators+"\n-------------------------------------";
     }
 }

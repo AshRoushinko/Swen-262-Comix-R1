@@ -44,4 +44,9 @@ public class Search extends Command {
         sr.initResult(searchResult);
         return sr;
     }
+
+    @Override
+    public String Undo() {
+        return ("UNDID SEARCH COMMAND");
+    }
 }

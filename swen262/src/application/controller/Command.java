@@ -24,6 +24,8 @@ public abstract class Command {
 
     public abstract Result getResult();
 
+    public abstract String Undo();
+
     /**
      * This method handles the search operation.
      * Param - content: includes a string representing a name or partial name of the comic(s) to search for.
