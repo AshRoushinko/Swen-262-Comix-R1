@@ -3,6 +3,7 @@ package model;
 import model.Comic;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Series {
 
@@ -20,5 +21,19 @@ public class Series {
 
     public String getName(){
         return this.name;
+    }
+
+    public void addComic(Comic c){
+        this.comics.add(c);
+    }
+
+    @Override
+    public String toString(){
+        String seriesString = "||||||||||||||||||||\nSERIES: "+this.name;
+        Iterator cI = comics.iterator();
+        while(cI.hasNext()){
+            seriesString = seriesString+"\n"+cI.next().toString();
+        }
+        return seriesString+"||||||||||||||||||||\n";
     }
 }

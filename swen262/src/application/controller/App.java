@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class App {
 
-    private final String filePath = "swen262/comics.csv";
+    private final String FILEPATH = "swen262/comics.csv";
 
     private Stack commandHistory;
 
@@ -31,7 +31,7 @@ public class App {
             if(commandType.equals("")){
                 running = false;
             }
-            else if (commandType.equals("1")){
+            else if (commandType.equals("11")||commandType.equals("12")){
                 String searchCriteria = input.next();
                 Command currCommand = new Search(commandType, searchCriteria, db.getComiccollection(), user.getComiccollection());
                 currCommand.run();
@@ -46,38 +46,51 @@ public class App {
 
     private String getCommandType(){
         Boolean firstE = true;
-        String s1 = input.next();
+        String userInput = input.next();
         while (firstE){
-            if (s1.equals("1")){
-                firstE = false;
+            if (userInput.equals("1")){
                 view.handleCommandSelection("1");
-                return "1";
+                String searchTypeInput = input.next();
+                if (searchTypeInput.equals("1")){
+                    firstE = false;
+                    view.handleCommandSelection("11");
+                    return "11";
+                }
+                else if (searchTypeInput.equals("2")){
+                    firstE = false;
+                    view.handleCommandSelection("12");
+                    return "12";
+                }
+                else{
+                    view.handleCommandSelection("I");
+                    return "";
+                }
             }
-            else if(s1.equals("2")){
+            else if(userInput.equals("2")){
                 firstE = false;
                 return "2";
             }
-            else if(s1.equals("3")){
+            else if(userInput.equals("3")){
                 firstE = false;
                 return "3";
             }
-            else if(s1.equals("4")){
+            else if(userInput.equals("4")){
                 firstE = false;
                 return "4";
             }
-            else if(s1.equals("5")){
+            else if(userInput.equals("5")){
                 firstE = false;
                 return "5";
             }
-            else if(s1.equals("6")){
+            else if(userInput.equals("6")){
                 firstE = false;
                 return "6";
             }
-            else if(s1.equals("7")){
+            else if(userInput.equals("7")){
                 firstE = false;
                 return "7";
             }
-            else if(s1.equals("8")){
+            else if(userInput.equals("8")){
                 firstE = false;
                 return "";
             }
@@ -89,7 +102,8 @@ public class App {
     }
 
     public void init(){
-        db = new Database(filePath);
+        db = new Database(FILEPATH);
+        db.testPrint();
         view = new PTUI();
         user = new User();
         commandHistory = new Stack<Command>();

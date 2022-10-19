@@ -7,21 +7,14 @@ import java.util.Iterator;
 
 public class SearchResult extends Result{
 
-    Collection<Comic> collection;
-
-    public SearchResult() {
-
-    }
-
-    @Override
-    public void initResult(Collection<Comic> collection) {
-        this.collection = collection;
+    public SearchResult(Collection<Comic> collection) {
+        super(collection);
     }
 
     @Override
     public String toString() {
         String show = "";
-        Iterator<Comic> results = collection.iterator();
+        Iterator<Comic> results = super.collection.iterator();
         while(results.hasNext()){
             show = show+"\n"+results.next().toString();
         }

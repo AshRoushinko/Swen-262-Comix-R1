@@ -8,11 +8,11 @@ public abstract class Result {
 
     public final String RESULT = "Result: \n";
     public final String BARRIER = "-----------------------------------------------------------------------------------";
+    public Collection<Comic> collection;
 
-    public Result(){
+    public Result(Collection<Comic> collection){
+        this.collection = collection;
     }
-
-    public abstract void initResult(Collection<Comic> collection);
 
     @Override
     public abstract String toString();

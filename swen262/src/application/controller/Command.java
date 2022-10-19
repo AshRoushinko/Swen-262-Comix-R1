@@ -8,10 +8,10 @@ import java.util.Collection;
 
 public abstract class Command {
 
-    String type;
-    String info;
-    Collection<Series> db;
-    Collection<Series> uc;
+    public String type;
+    public String info;
+    public Collection<Series> db;
+    public Collection<Series> uc;
 
     public Command(String type, String info, Collection<Series> db, Collection<Series> uc){
         this.type = type;
@@ -19,6 +19,8 @@ public abstract class Command {
         this.db = db;
         this.uc = uc;
     }
+
+    public abstract void init(String type, String info, Collection<Series> db, Collection<Series> uc);
 
     public abstract Collection<Comic> run();
 

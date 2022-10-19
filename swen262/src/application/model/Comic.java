@@ -1,29 +1,36 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Comic {
 
-    private String series, title, description, publicationDate, format, addDate, publisher;
-    private String[] creators;
+    private String series, title, description, releaseDate, format, addDate, publisher;
+    private ArrayList<String> creators;
     private String issue;
-    private String volume;
     private double value;
 
     private Boolean isGraded;
     private Boolean isSlabbed;
 
-    public Comic(String series, String title, String issue, String volume, String publicationDate){
+    public Comic(String series, String issue, String title, String description,
+                 String publisher, String releaseDate, String format, String addDate, ArrayList<String> creators){
         this.series = series;
-        this.title = title;
         this.issue = issue;
-        this.volume = volume;
-        this.publicationDate = publicationDate;
+        this.title = title;
+        this.description = description;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.format = format;
+        this.addDate = addDate;
+        this.creators = creators;
+        //TODO implement value
+        this.value = 0.0;
         isGraded = false;
         isSlabbed = false;
     }
 
-    //SETTERS
-
-
+    //SETTERS-----------------------------------------------------
     public void setFormat(String format) {
         this.format = format;
     }
@@ -40,7 +47,7 @@ public class Comic {
         this.description = description;
     }
 
-    public void setCreators(String[] creators) {
+    public void setCreators(ArrayList<String> creators) {
         this.creators = creators;
     }
 
@@ -48,16 +55,12 @@ public class Comic {
         this.issue = issue;
     }
 
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
+    public void setReleaseDate(String publicationDate) {
+        this.releaseDate = publicationDate;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setVolume(String volume) {
-        this.volume = volume;
     }
 
     //GETTERS --------------------------------
@@ -69,7 +72,7 @@ public class Comic {
         return addDate;
     }
 
-    public String[] getCreators() {
+    public ArrayList<String> getCreators() {
         return creators;
     }
 
@@ -85,12 +88,8 @@ public class Comic {
         return issue;
     }
 
-    public String getVolume() {
-        return volume;
-    }
-
-    public String getPublicationDate() {
-        return publicationDate;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
     public String getSeries() {
@@ -101,10 +100,26 @@ public class Comic {
         return title;
     }
 
+    //VIEW METHODS ---------------------------------
+
+    public String creatorsToString(){
+        String cString = "";
+
+        int x = 1;//Creator number
+
+        Iterator<String> cIter = creators.iterator();
+
+        while(cIter.hasNext()){
+            cString = cString+"\n"+x+":"+cIter.next();
+            x+=1;
+        }
+        return cString;
+    }
+
     @Override
-    public String toString(){
-        return "Series: "+this.series+"\nVolume: "+this.volume+"\nIssue: "+this.issue+"\nTitle: "+this.title+"" +
-                "\nDescription: "+this.description+"\nPublisher: "+this.publisher+"\nPublication Date: "+this.publicationDate+"" +
-                "\nFormat: "+this.format+"\nAdd Date: "+this.addDate+"\nCreators: "+this.creators+"\n-------------------------------------";
+    public String toString(){//TODO Make this look better
+        return "ISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
+                "\nPUBLISHER: "+this.publisher+"\nRELEASE DATE: "+this.releaseDate+"\nFORMAT: "+this.format+"" +
+                "\nADD DATE: "+this.addDate+"\nVALUE: "+this.value+"\n------CREATORS------"+creatorsToString()+"\n--------------------\n";
     }
 }

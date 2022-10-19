@@ -18,6 +18,11 @@ public class Search extends Command {
     }
 
     @Override
+    public void init(String type, String info, Collection<Series> db, Collection<Series> uc) {
+
+    }
+
+    @Override
     public Collection<Comic> run() {
 
         //TODO partial or exact matches
@@ -29,8 +34,15 @@ public class Search extends Command {
             Iterator<Comic> cCollection = sCollection.next().getComics().iterator();
             while(cCollection.hasNext()){
                 Comic curr = cCollection.next();
-                if (curr.getTitle().contains(this.info)){
-                    searchResult.add(curr);
+                if (this.type.equals("11")){
+                    if (curr.getTitle().equals(this.info)){
+                        searchResult.add(curr);
+                    }
+                }
+                else{
+                    if (curr.getTitle().contains(this.info)){
+                        searchResult.add(curr);
+                    }
                 }
             }
         }
@@ -40,8 +52,7 @@ public class Search extends Command {
 
     @Override
     public Result getResult() {
-        Result sr = new SearchResult();
-        sr.initResult(searchResult);
+        Result sr = new SearchResult(searchResult);
         return sr;
     }
 
