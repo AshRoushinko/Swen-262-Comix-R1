@@ -26,7 +26,7 @@ public abstract class Command {
 
     public abstract Result getResult();
 
-    public abstract String Undo();
+    public abstract String undo();
 
     /**
      * This method handles the search operation.

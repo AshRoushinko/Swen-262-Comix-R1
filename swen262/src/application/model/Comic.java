@@ -5,9 +5,8 @@ import java.util.Iterator;
 
 public class Comic {
 
-    private String series, title, description, releaseDate, format, addDate, publisher;
+    private String series, issue, title, description, releaseDate, format, addDate, publisher;
     private ArrayList<String> creators;
-    private String issue;
     private double value;
 
     private Boolean isGraded;

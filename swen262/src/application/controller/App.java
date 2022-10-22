@@ -1,6 +1,6 @@
 package controller;
 
-import model.Database;
+import model.ComixDatabase;
 import model.User;
 import view.PTUI;
 
@@ -13,7 +13,7 @@ public class App {
 
     private Stack commandHistory;
 
-    private Database db;
+    private ComixDatabase db;
     private User user;
     private PTUI view;
     private Scanner input;
@@ -23,17 +23,20 @@ public class App {
     public App(){
     }
 
+    //TODO add a signin command (Store each profile in one csv file) SIGNOUT COMMAND WILL STORE THE PROFILE.
+
     public void run(){
         running = true;
         while (running){
             input = new Scanner(System.in);
             String commandType = getCommandType();
+            String commandArgs = input.nextLine();
             if(commandType.equals("")){
                 running = false;
             }
             else if (commandType.equals("11")||commandType.equals("12")){
-                String searchCriteria = input.next();
-                Command currCommand = new Search(commandType, searchCriteria, db.getComiccollection(), user.getComiccollection());
+                String searchCriteria = commandArgs;
+                Command currCommand = new Search(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
                 currCommand.run();
                 view.display(currCommand.getResult());
                 commandHistory.add(currCommand);
@@ -46,64 +49,65 @@ public class App {
 
     private String getCommandType(){
         Boolean firstE = true;
-        String userInput = input.next();
+        String userInput = input.nextLine();
+        String commandCode = "";
         while (firstE){
             if (userInput.equals("1")){
                 view.handleCommandSelection("1");
-                String searchTypeInput = input.next();
+                String searchTypeInput = input.nextLine();
                 if (searchTypeInput.equals("1")){
                     firstE = false;
                     view.handleCommandSelection("11");
-                    return "11";
+                    commandCode = "11";
                 }
                 else if (searchTypeInput.equals("2")){
                     firstE = false;
                     view.handleCommandSelection("12");
-                    return "12";
+                    commandCode = "12";
                 }
                 else{
                     view.handleCommandSelection("I");
-                    return "";
+                    commandCode = "";
                 }
             }
             else if(userInput.equals("2")){
                 firstE = false;
-                return "2";
+                commandCode = "2";
             }
             else if(userInput.equals("3")){
                 firstE = false;
-                return "3";
+                commandCode = "3";
             }
             else if(userInput.equals("4")){
                 firstE = false;
-                return "4";
+                commandCode = "4";
             }
             else if(userInput.equals("5")){
                 firstE = false;
-                return "5";
+                commandCode = "5";
             }
             else if(userInput.equals("6")){
                 firstE = false;
-                return "6";
+                commandCode = "6";
             }
             else if(userInput.equals("7")){
                 firstE = false;
-                return "7";
+                commandCode = "7";
             }
             else if(userInput.equals("8")){
                 firstE = false;
-                return "";
+                commandCode = "";
             }
             else{
                 view.handleCommandSelection("I");
             }
         }
-        return "";
+        return commandCode;
     }
 
     public void init(){
-        db = new Database(FILEPATH);
-        db.testPrint();
+        db = new ComixDatabase(FILEPATH);
+        //db.display();
         view = new PTUI();
         user = new User();
         commandHistory = new Stack<Command>();

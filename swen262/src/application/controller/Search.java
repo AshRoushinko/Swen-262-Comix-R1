@@ -25,7 +25,7 @@ public class Search extends Command {
     @Override
     public Collection<Comic> run() {
 
-        //TODO partial or exact matches
+        //TODO Only looks through titles, needs to look through the other fields as well
 
         Collection<Comic> searchResult = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class Search extends Command {
     }
 
     @Override
-    public String Undo() {
+    public String undo() {
         return ("UNDID SEARCH COMMAND");
     }
 }
