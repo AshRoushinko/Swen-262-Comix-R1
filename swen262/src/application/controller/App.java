@@ -1,11 +1,12 @@
 package controller;
 
+import model.Comic;
 import model.ComixDatabase;
 import model.User;
 import view.PTUI;
+import view.Result;
 
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class App {
 
@@ -41,12 +42,40 @@ public class App {
                 view.display(currCommand.getResult());
                 commandHistory.add(currCommand);
             }
+            else if (commandType.equals("211")||commandType.equals("212")){
+                //Run a search command so the user can add a comic from the search
+                String searchCriteria = commandArgs;
+                Command currCommand = new Search(commandType.substring(1), searchCriteria, db.getComicCollection(), user.getComiccollection());
+                currCommand.run();
+                view.display(currCommand.getResult());
+                commandHistory.add(currCommand);
+
+                Scanner addSelectionScanner = new Scanner(System.in);
+                String addSelection = addSelectionScanner.nextLine();
+                currCommand = new AddFromDB(commandType, addSelection, db.getComicCollection(), user.getComiccollection());
+                currCommand.run();
+                Result addresult = currCommand.getResult();
+                Collection<Comic> comicToAddCF = addresult.getResultCollection();
+                Comic comictoAdd = comicToAddCF.iterator().next();
+                user.addComicToUser(comictoAdd);
+                view.display(addresult);
+                commandHistory.add(currCommand);
+            }
+            else if (commandType.equals("22")){
+                String searchCriteria = commandArgs;
+                Command currCommand = new AddFromInput(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
+                currCommand.run();
+                view.display(currCommand.getResult());
+                commandHistory.add(currCommand);
+            }
             else{
 
             }
         }
     }
 
+
+    //TODO CAN POSSIBLY MAKE THIS CLEANER
     private String getCommandType(){
         Boolean firstE = true;
         String userInput = input.nextLine();
@@ -71,8 +100,35 @@ public class App {
                 }
             }
             else if(userInput.equals("2")){
+                view.handleCommandSelection("2");
+                String addTypeInput = input.nextLine();
                 firstE = false;
-                commandCode = "2";
+                if (addTypeInput.equals("1")){
+                    firstE = false;
+                    view.handleCommandSelection("21");
+                    addTypeInput = input.nextLine();
+                    if (addTypeInput.equals("1")){
+                        view.handleCommandSelection("211");
+                        commandCode = "211";
+                    }
+                    else if (addTypeInput.equals("2")){
+                        view.handleCommandSelection("212");
+                        commandCode = "212";
+                    }
+                    else{
+                        view.handleCommandSelection("I");
+                        commandCode = "";
+                    }
+                }
+                else if (addTypeInput.equals("2")){
+                    firstE = false;
+                    view.handleCommandSelection("22");
+                    commandCode = "22";
+                }
+                else{
+                    view.handleCommandSelection("I");
+                    commandCode = "";
+                }
             }
             else if(userInput.equals("3")){
                 firstE = false;

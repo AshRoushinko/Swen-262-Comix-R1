@@ -5,15 +5,16 @@ import java.util.Iterator;
 
 public class Comic {
 
-    private String series, issue, title, description, releaseDate, format, addDate, publisher;
+    private String series, issue, title, description, releaseDate, format, addDate, publisher, id;
     private ArrayList<String> creators;
     private double value;
 
     private Boolean isGraded;
     private Boolean isSlabbed;
 
-    public Comic(String series, String issue, String title, String description,
+    public Comic(String id, String series, String issue, String title, String description,
                  String publisher, String releaseDate, String format, String addDate, ArrayList<String> creators){
+        this.id = id;
         this.series = series;
         this.issue = issue;
         this.title = title;
@@ -63,6 +64,14 @@ public class Comic {
     }
 
     //GETTERS --------------------------------
+    public String getID(){
+        return id;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
     public double getValue() {
         return value;
     }

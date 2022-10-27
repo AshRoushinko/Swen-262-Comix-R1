@@ -14,6 +14,10 @@ public abstract class Result {
         this.collection = collection;
     }
 
+    public Collection<Comic> getResultCollection(){
+        return this.collection;
+    }
+
     @Override
     public abstract String toString();
 

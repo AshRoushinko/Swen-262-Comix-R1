@@ -60,6 +60,9 @@ public class ComixDatabase implements Database{
 
             Series currSeries = new Series("first iteration (temp)", null);//Variable that represents the current series
 
+            String id = "";//String representing the comics id (used for adding to collection)
+            int idIDX = 1;
+
             //TODO turn into a loop, Try to make all sections the same (NOT METHODS)
 
             while (fileScanner.hasNextLine()){//Create a while loop that runs as long as the fileScanner has another line
@@ -135,7 +138,8 @@ public class ComixDatabase implements Database{
                 }
                 //------------------------------------------------------------------------------------------------------
                 //Create the comic book object
-                Comic currComic = new Comic(currComicSeries, currComicIssue, currComicTitle, currComicDescription,
+                id = idIDX+"";
+                Comic currComic = new Comic(id,currComicSeries, currComicIssue, currComicTitle, currComicDescription,
                         currComicPublisher, currComicReleaseDate, currComicFormat, currComicAddDate,currComicCreators);
 
                 //Create the series object
@@ -162,6 +166,7 @@ public class ComixDatabase implements Database{
                 else{
                     System.out.println("ERROR");
                 }
+                idIDX++;
             }
         }catch(FileNotFoundException exception){
             exception.printStackTrace();
