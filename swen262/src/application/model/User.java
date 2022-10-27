@@ -71,7 +71,6 @@ public class User implements Database{
                         searching = false;
                     }
                     else{
-
                     }
                 }
                 else{

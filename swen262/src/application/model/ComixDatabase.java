@@ -184,7 +184,6 @@ public class ComixDatabase implements Database{
         //TODO
     }
     public void display() {
-        System.out.println("Test");
         Iterator sI = comicCollection.iterator();
         System.out.println(sI.hasNext());
         while(sI.hasNext()){
