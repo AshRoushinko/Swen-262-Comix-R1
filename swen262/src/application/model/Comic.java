@@ -126,7 +126,7 @@ public class Comic {
 
     @Override
     public String toString(){//TODO Make this look better
-        return "ISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
+        return "COMIC ID: "+this.id+"\nSERIES: "+this.series+"\nISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
                 "\nPUBLISHER: "+this.publisher+"\nRELEASE DATE: "+this.releaseDate+"\nFORMAT: "+this.format+"" +
                 "\nADD DATE: "+this.addDate+"\nVALUE: "+this.value+"\n------CREATORS------"+creatorsToString()+"\n--------------------\n";
     }

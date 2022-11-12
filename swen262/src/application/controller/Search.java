@@ -21,12 +21,11 @@ public class Search extends Command {
     public void init(String type, String info, Collection<Series> db, Collection<Series> uc) {
 
     }
-
     @Override
     public Collection<Comic> run() {
-
         //TODO Only looks through titles, needs to look through the other fields as well
-
+        //TODO if the input is nothing it will loop through the error message
+        //TODO display series in output
         Collection<Comic> searchResult = new ArrayList<>();
 
         Iterator<Series> sCollection = db.iterator();

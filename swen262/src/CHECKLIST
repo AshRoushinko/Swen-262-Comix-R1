@@ -3,17 +3,18 @@ C if Complete
 
 R1: X
 Functional Requirements: X
-1: X
+1: C
     A Comic Book has the following attributes
     - Publisher
-    - Series Title
-    - Volume Number
+    - Series
+    - Title
     - Issue Number
-    - Publication Date
+    - Add Date
+    - Release Date
     - Creators
     - Description
     - Value
-2: X
+2: C
     The App will provide a searchable database of comics
     - Database is immutable
     - Database provides the following fields
@@ -27,7 +28,7 @@ Functional Requirements: X
     - Searches are case sensitive
 3: X
     User should be able to maintain a personal collection
-    - Adding comics from the database
+    - Adding comics from the database (Adding the ID number to the search and allow the user to select an ID bnumber to add)
     - Adding comics manually
     - Removing Comics
     - Editing Attributes of comics already in personal collection
@@ -52,4 +53,15 @@ Functional Requirements: X
         - Creator Names
         - Description
     - User should be able to specify whether they want exact or partial matches
-        -
+    - Search results should be sortable by
+        - Series
+        - Title
+        - Volume
+        - Issue Number
+        - Publication Date
+
+Non-Functional Requirements: X
+1: X
+    Initial Version required a PTUI
+2: X
+    The user profile must be stored in between uses of application
