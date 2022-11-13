@@ -12,7 +12,7 @@ public class User implements Database{
         System.out.println("Building User database Arraylist");
         userCollection = new ArrayList<>();
         System.out.println("User Arraylist Created");
-        //
+
         ArrayList<String> creatortemp = new ArrayList<>();
         creatortemp.add("dwhuhdu");
 
@@ -23,7 +23,6 @@ public class User implements Database{
 
         Series temp = new Series("TEST", temp1);
         userCollection.add(temp);
-        //
     }
 
     public Collection<Series> getComiccollection() {
@@ -43,9 +42,7 @@ public class User implements Database{
     @Override
     public void display() {
         Iterator sI = userCollection.iterator();
-        System.out.println(sI.hasNext());
         while(sI.hasNext()){
-            System.out.println("Test");
             System.out.println(sI.next().toString());
         }
     }
@@ -64,7 +61,7 @@ public class User implements Database{
     }
 
     @Override
-    public Comic getComic(int id) {
+    public Comic getComic(String id) {
         Iterator<Series> seriesIterator = userCollection.iterator();
         while (seriesIterator.hasNext()){
             Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
@@ -73,35 +70,25 @@ public class User implements Database{
                 return currComic;
             }
         }
-        System.out.println("No series with the provided name");
+        System.out.println("No comic with the provided name");
         return null;
     }
 
     public void addComicToUser(Comic comic){
         String comicSeries = comic.getSeries();
         if (comicSeries.equals("")){//No Series
-
+            System.out.println("No Series");
         }
         else{
-            Iterator<Series> userIteratorSeries = userCollection.iterator();
-            boolean searching = true;
-            while(searching){
-                if (userIteratorSeries.hasNext()){
-                    Series currSeries = userIteratorSeries.next();
-                    if (currSeries.getName().equals(comicSeries)){
-                        currSeries.addComic(comic);
-                        searching = false;
-                    }
-                    else{
-                    }
-                }
-                else{
-                    Collection<Comic> newSeriesList = new ArrayList<>();
-                    newSeriesList.add(comic);
-                    Series newSeriesObj = new Series(comicSeries, newSeriesList);
-                    addSeries(newSeriesObj);
-                }
-
+            if (userCollection.contains(getSeries(comicSeries))){
+                Series currSeries = getSeries(comicSeries);
+                currSeries.addComic(comic);
+            }
+            else{
+                Collection<Comic> newSeriesList = new ArrayList<>();
+                newSeriesList.add(comic);
+                Series newSeriesObj = new Series(comicSeries, newSeriesList);
+                addSeries(newSeriesObj);
             }
         }
     }

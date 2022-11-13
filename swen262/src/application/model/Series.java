@@ -29,7 +29,7 @@ public class Series {
 
     @Override
     public String toString(){
-        String seriesString = "||||||||||||||||||||\nSERIES: "+this.name+"--------------------";
+        String seriesString = "||||||||||||||||||||\nSERIES: "+this.name+"\n--------------------";
         Iterator cI = comics.iterator();
         while(cI.hasNext()){
             seriesString = seriesString+"\n"+cI.next().toString();

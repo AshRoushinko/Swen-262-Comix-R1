@@ -1,7 +1,9 @@
 package controller;
 
 import model.Comic;
+import model.ComixDatabase;
 import model.Series;
+import model.User;
 import view.Result;
 import view.SearchResult;
 
@@ -13,19 +15,19 @@ public class Browse extends Command{
 
     private Collection<Comic> browseResult;
 
-    public Browse(CommandType type, String info, Collection<Series> db, Collection<Series> uc) {
+    public Browse(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
+    public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
 
     @Override
     public Collection<Comic> run() {
         browseResult = new ArrayList<>();
-        Iterator<Series> seriesIterator = uc.iterator();
+        Iterator<Series> seriesIterator = uc.getComiccollection().iterator();
         while (seriesIterator.hasNext()){
             Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
             while (comicIterator.hasNext()){
@@ -55,6 +57,7 @@ public class Browse extends Command{
                 }
             }
         }
+
         return browseResult;
     }
 

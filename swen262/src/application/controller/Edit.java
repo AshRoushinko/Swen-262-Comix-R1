@@ -1,19 +1,21 @@
 package controller;
 
 import model.Comic;
+import model.ComixDatabase;
 import model.Series;
+import model.User;
 import view.Result;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class Edit extends Command{
-    public Edit(CommandType type, String info, Collection<Series> db, Collection<Series> uc) {
+    public Edit(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
+    public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
         //STRING INFO EXAMPLE: "312:Batman"
         //String id = 312
         //String editvalue = "Batman"

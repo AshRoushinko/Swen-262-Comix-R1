@@ -50,7 +50,7 @@ public class App {
             //SEARCH
             else if (commandType==CommandType.SEARCHEXACT||commandType==CommandType.SEARCHPARTIAL){
                 String searchCriteria = commandArgs;
-                Command currCommand = new Search(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
+                Command currCommand = new Search(commandType, searchCriteria, db, user);
                 currCommand.run();
                 view.display(currCommand.getResult());
                 //commandHistory.add(currCommand);
@@ -60,7 +60,7 @@ public class App {
             else if (commandType==CommandType.ADDFROMDBEXACT||commandType==CommandType.ADDFROMDBPARTIAL){
                 //Run a search command so the user can add a comic from the search
                 String searchCriteria = commandArgs;
-                Command currCommand = new Search(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
+                Command currCommand = new Search(commandType, searchCriteria, db, user);
                 currCommand.run();
                 view.display(currCommand.getResult());
                 //commandHistory.add(currCommand);
@@ -76,7 +76,7 @@ public class App {
                 String addSelection = addSelectionScanner.nextLine();
                 System.out.println("USER INPUT/COMIC ID: "+addSelection);
                 System.out.println("SETTING CURRENT COMMAND TO A NEW ADDFROMDB COMMAND");
-                currCommand = new AddFromDB(commandType, addSelection, db.getComicCollection(), user.getComiccollection());
+                currCommand = new AddFromDB(commandType, addSelection, db, user);
                 System.out.println("SUCCESSFULLY CREATED ADDFROMDB COMMAND");
                 System.out.println("RUNNING COMMAND");
                 Collection<Comic> comicToAdd = currCommand.run();// This is equal to the comic selected by the user
@@ -91,7 +91,7 @@ public class App {
             }
             else if (commandType==CommandType.ADDFROMINPUT){
                 String searchCriteria = commandArgs;
-                Command currCommand = new AddFromInput(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
+                Command currCommand = new AddFromInput(commandType, searchCriteria, db, user);
                 currCommand.run();
                 view.display(currCommand.getResult());
                 //commandHistory.add(currCommand);
@@ -106,7 +106,7 @@ public class App {
                 else{
                     searchCriteria = commandArgs;
                 }
-                Command currCommand = new Browse(commandType, searchCriteria, db.getComicCollection(), user.getComiccollection());
+                Command currCommand = new Browse(commandType, searchCriteria, db, user);
                 Collection<Comic> browseresult = currCommand.run();
             }
 

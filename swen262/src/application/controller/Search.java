@@ -1,7 +1,9 @@
 package controller;
 
 import model.Comic;
+import model.ComixDatabase;
 import model.Series;
+import model.User;
 import view.Result;
 import view.SearchResult;
 
@@ -13,12 +15,12 @@ public class Search extends Command {
 
     private Collection<Comic> searchResult;
 
-    public Search(CommandType type, String info, Collection<Series> db,Collection<Series> uc) {
+    public Search(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
+    public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
 
@@ -28,8 +30,7 @@ public class Search extends Command {
         //TODO if the input is nothing it will loop through the error message
         //TODO display series in output
         searchResult = new ArrayList<>();
-
-        Iterator<Series> sCollection = db.iterator();
+        Iterator<Series> sCollection = db.getComicCollection().iterator();
         while(sCollection.hasNext()){
             Iterator<Comic> cCollection = sCollection.next().getComics().iterator();
             while(cCollection.hasNext()){

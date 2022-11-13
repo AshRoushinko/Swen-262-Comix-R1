@@ -209,16 +209,19 @@ public class ComixDatabase implements Database{
     }
 
     @Override
-    public Comic getComic(int id) {
+    public Comic getComic(String id) {
         Iterator<Series> seriesIterator = comicCollection.iterator();
         while (seriesIterator.hasNext()){
-            Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
-            Comic currComic = comicIterator.next();
-            if (currComic.getID().equals(id)){
-                return currComic;
+            Series currSeries = seriesIterator.next();
+            Iterator<Comic> comicIterator = currSeries.getComics().iterator();
+            while (comicIterator.hasNext()){
+                Comic currComic = comicIterator.next();
+                if (currComic.getID().equals(id)){
+                    return currComic;
+                }
             }
         }
-        System.out.println("No series with the provided name");
+        System.out.println("No comic with the provided id");
         return null;
     }
 }

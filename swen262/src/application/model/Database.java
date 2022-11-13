@@ -10,6 +10,6 @@ public interface Database {
 
     public Series getSeries(String name);
 
-    public Comic getComic(int id);
+    public Comic getComic(String id);
 
 }
