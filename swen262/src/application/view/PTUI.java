@@ -43,8 +43,15 @@ public class PTUI {
         else if(infoMessage==CommandType.ADDFROMINPUT){
             System.out.println("Adding comic manually...\nPlease fill out each field.\nSeries: ");
         }
-        else if(infoMessage.equals("3")){
-
+        else if(infoMessage==CommandType.REMOVE){
+            System.out.println("You have selected to remove a comic from your personal collection...");
+        }
+        else if(infoMessage==CommandType.REMOVESELECT){
+            System.out.println("1: Select 1 if you already know the comics ID\n" +
+                    "2: Select 2 if you wish to browse your Collection");
+        }
+        else if(infoMessage==CommandType.REMOVECOMPLETE){
+            System.out.println("Enter the Comic ID of the comic you would like to remove to your personal collection\nID:");
         }
         else if(infoMessage==CommandType.EDIT){
             System.out.println("Select which field you would like to edit. You will select the comic after...\n" +
@@ -81,7 +88,7 @@ public class PTUI {
                     "5: Issues");
         }
         else if(infoMessage==CommandType.BROWSECOLLECTION){
-            System.out.println("");
+            System.out.println("Displaying your entire collection...");
         }
         else if(infoMessage==CommandType.BROWSEPUBLISHERS){
             System.out.println("Enter the name of the Publisher you would like to search for\n" +

@@ -9,6 +9,10 @@ import view.Result;
 import java.util.Collection;
 
 public class StoreProfile extends Command{
+
+    private Collection<Comic> storeResult;
+    private String resultString;
+
     public StoreProfile(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
@@ -25,12 +29,12 @@ public class StoreProfile extends Command{
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return storeResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
 
     @Override
@@ -40,11 +44,11 @@ public class StoreProfile extends Command{
 
     @Override
     public void setResultString(String s) {
-
+        resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }

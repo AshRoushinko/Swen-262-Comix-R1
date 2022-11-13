@@ -36,7 +36,13 @@ public class App {
         while (running){
             input = new Scanner(System.in);
             CommandType commandType = getCommandType(ForceCommand.NONE);
-            String commandArgs = input.nextLine();//Search criteria
+            String commandArgs;
+            if (commandType==CommandType.BROWSECOLLECTION){
+                commandArgs = "";
+            }
+            else{
+                commandArgs = input.nextLine();//Search criteria
+            }
             if(commandType==null){
                 System.out.println("CommandType is Null");
                 running = false;
@@ -50,25 +56,35 @@ public class App {
             }
             //----------------------------------------------------------------------------------------------------------
             //ADD
-            else if (commandType==CommandType.ADDFROMDBEXACT||commandType==CommandType.ADDFROMDBPARTIAL){
-                //FIRST RUN A SEARCH TO SHOW ALL OF THE POSSIBLE COMICS TO ADD
-                String searchCriteria = commandArgs;
-                Command currCommand = new Search(commandType, searchCriteria, db, user);
-                runCommand(currCommand);
-                //THEN HANDLE ADD COMMAND
+            else if (commandType==CommandType.ADDFROMDB){
+                if (commandArgs.equals("1")){
+                }
+                else{
+                    //RUN A SEARCH TO SHOW ALL OF THE POSSIBLE COMICS TO ADD
+                    CommandType searchInstance = getCommandType(ForceCommand.SEARCH);
+                    Scanner addSearchSelectionScanner = new Scanner(System.in);
+                    String addSearchSelection = addSearchSelectionScanner.nextLine();
+                    Command currCommand = new Search(searchInstance, addSearchSelection, db, user);
+                    runCommand(currCommand);
+                }
+                //HANDLE ADD COMMAND
                 view.handleCommandSelection(CommandType.ADDFROMDB);
                 Scanner addSelectionScanner = new Scanner(System.in);
                 String addSelection = addSelectionScanner.nextLine();
-                currCommand = new AddFromDB(commandType, addSelection, db, user);
-                Collection<Comic> comicToAdd = currCommand.run();// This is equal to the comic selected by the user
+                Command currCommand = new AddFromDB(commandType, addSelection, db, user);
+                runCommand(currCommand);
 
+                //TODO
                 //commandHistory.add(currCommand);
+
             }
             else if (commandType==CommandType.ADDFROMINPUT){
+                //TODO
                 String searchCriteria = commandArgs;
                 Command currCommand = new AddFromInput(commandType, searchCriteria, db, user);
-                currCommand.run();
-                //view.display(currCommand.getResult());
+                runCommand(currCommand);
+
+                //TODO
                 //commandHistory.add(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
@@ -82,7 +98,7 @@ public class App {
                     searchCriteria = commandArgs;
                 }
                 Command currCommand = new Browse(commandType, searchCriteria, db, user);
-                Collection<Comic> browseresult = currCommand.run();
+                runCommand(currCommand);
             }
 
             //----------------------------------------------------------------------------------------------------------
@@ -92,22 +108,25 @@ public class App {
                 }
                 else{
                     CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
-                    String searchCriteria;
+                    Scanner editBrowseSelectionScanner = new Scanner(System.in);
+                    String editBrowseSelection = editBrowseSelectionScanner.nextLine();
+                    String browseCriteria;
                     if (browseInstance==CommandType.BROWSECOLLECTION){
-                        searchCriteria = "";
+                        browseCriteria = "";
                     }
                     else{
-                        searchCriteria = commandArgs;
+                        browseCriteria = editBrowseSelection;
                     }
-                    Command currCommand = new Browse(commandType, searchCriteria, db, user);
-                    Collection<Comic> browseresult = currCommand.run();
+                    Command currCommand = new Browse(browseInstance, browseCriteria, db, user);
+                    runCommand(currCommand);
                 }
                 view.handleCommandSelection(CommandType.EDITCOMPLETE);
                 Scanner editScanner = new Scanner(System.in);
                 String editCriteria = editScanner.nextLine();
                 Command currCommand = new Edit(commandType,editCriteria,db,user);
-                Collection<Comic> editResult = currCommand.run();
+                runCommand(currCommand);
 
+                //commandHistory.add(currCommand);
             }
 
             //----------------------------------------------------------------------------------------------------------
@@ -145,7 +164,6 @@ public class App {
                 }
                 else{
                     commandCode = CommandType.ERROR;
-                    view.handleCommandSelection(commandCode);
                 }
                 view.handleCommandSelection(commandCode);
             }
@@ -156,6 +174,9 @@ public class App {
                 String addTypeInput = input.nextLine();
                 firstE = false;
                 if (addTypeInput.equals("1")){
+                    commandCode = CommandType.ADDFROMDB;
+                    view.handleCommandSelection(CommandType.ADDSELECT);
+                    /**
                     view.handleCommandSelection(CommandType.SEARCH);
                     addTypeInput = input.nextLine();
                     if (addTypeInput.equals("1")){
@@ -168,7 +189,7 @@ public class App {
                     }
                     else{
                         commandCode = CommandType.ERROR;
-                    }
+                    }*/
                 }
                 else if (addTypeInput.equals("2")){
                     commandCode = CommandType.ADDFROMINPUT;

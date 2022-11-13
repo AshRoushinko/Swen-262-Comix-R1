@@ -49,7 +49,7 @@ public class Search extends Command {
         }
         Result searchResultVisitor = new SearchResult();
         setResultString(getResult(searchResultVisitor));
-        return this.searchResult;
+        return searchResult;
     }
 
     @Override

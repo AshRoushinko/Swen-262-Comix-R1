@@ -6,9 +6,14 @@ import model.Series;
 import model.User;
 import view.Result;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Mark extends Command{
+
+    private Collection<Comic> markResult;
+    private String resultString;
+
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
@@ -20,17 +25,20 @@ public class Mark extends Command{
 
     @Override
     public Collection<Comic> run() {
-        return null;
+        markResult = new ArrayList<>();
+
+
+        return markResult;
     }
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return markResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
 
     @Override
@@ -40,11 +48,11 @@ public class Mark extends Command{
 
     @Override
     public void setResultString(String s) {
-
+        resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }

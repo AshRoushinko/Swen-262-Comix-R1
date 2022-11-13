@@ -4,6 +4,7 @@ import model.Comic;
 import model.ComixDatabase;
 import model.Series;
 import model.User;
+import view.RemoveResult;
 import view.Result;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Collection;
 
 public class Remove extends Command{
     Collection<Comic> removeResult;
+    private String resultString;
 
     public Remove(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
@@ -26,19 +28,22 @@ public class Remove extends Command{
         removeResult = new ArrayList<>();
         //Iterate through the user collection until you find a comic that matches the id represented by the info variable
         //Collection<Series> = user.getCollection
+        //TODO
 
 
-        return null;
+        Result removeResultVisitor = new RemoveResult();
+        setResultString(getResult(removeResultVisitor));
+        return this.removeResult;
     }
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return removeResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
 
     @Override
@@ -48,11 +53,11 @@ public class Remove extends Command{
 
     @Override
     public void setResultString(String s) {
-
+        this.resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }

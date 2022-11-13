@@ -4,6 +4,8 @@ import model.Comic;
 import model.ComixDatabase;
 import model.Series;
 import model.User;
+import view.AddResult;
+import view.EditResult;
 import view.Result;
 
 import java.util.ArrayList;
@@ -11,6 +13,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class Edit extends Command{
+
+    private Collection<Comic> editResult;
+    private String resultString;
+    private String id;
+
     public Edit(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
@@ -30,8 +37,12 @@ public class Edit extends Command{
      */
     @Override
     public Collection<Comic> run() {
-        Collection<Comic> result = new ArrayList<>();
-        //split the info string into two variables: ID and VALUE
+        //TODO - will do this if we have time but not important; setup code that will handle input with multiple :
+        //TODO The above todo goes with the todo in editResult
+        editResult = new ArrayList<>();
+        String[] editValueSplit = info.split(":");
+        id = editValueSplit[0];
+        String value = editValueSplit[1];
         //Remove the comic and set it as a variable (Comic = uc.remove(id))
         //Depending on the command type change the value of one of the comics attributes using Comic.setAttribute(VALUE)
         //Then add it back to the user collection with uc.addComicToUser(Comic)
@@ -40,23 +51,30 @@ public class Edit extends Command{
 
 
 
-        //test
-        Iterator<Comic> test = result.iterator();
+        //TODO - this is a test, delete when the edit command is fully functional
+        Iterator<Comic> test = editResult.iterator();
         while (test.hasNext()){
             System.out.println(test.next().toString());
         }
 
-        return result;
+
+        Result editResultVisitor = new EditResult();
+        setResultString(getResult(editResultVisitor));
+        return editResult;
+    }
+
+    public String getID(){
+        return this.id;
     }
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return editResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
 
     @Override
@@ -66,11 +84,11 @@ public class Edit extends Command{
 
     @Override
     public void setResultString(String s) {
-
+        this.resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }

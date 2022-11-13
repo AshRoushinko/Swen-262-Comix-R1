@@ -5,6 +5,7 @@ import model.ComixDatabase;
 import model.Series;
 import model.User;
 import view.Result;
+import view.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 public class Browse extends Command{
 
     private Collection<Comic> browseResult;
+    private String resultString;
 
     public Browse(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
@@ -56,33 +58,33 @@ public class Browse extends Command{
                 }
             }
         }
-
+        Result browseResultVisitor = new SearchResult();
+        setResultString(getResult(browseResultVisitor));
         return browseResult;
     }
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return browseResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
-
 
     @Override
     public String undo() {
-        return null;
+        return ("UNDID BROWSE COMMAND");
     }
 
     @Override
     public void setResultString(String s) {
-
+        resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }

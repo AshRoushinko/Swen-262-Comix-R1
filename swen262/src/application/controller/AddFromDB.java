@@ -4,13 +4,19 @@ import model.Comic;
 import model.ComixDatabase;
 import model.Series;
 import model.User;
+import view.AddResult;
 import view.Result;
+import view.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 public class AddFromDB extends Command{
+
+    private Collection<Comic> addResult;
+    private String resultString;
+
     public AddFromDB(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
@@ -22,26 +28,27 @@ public class AddFromDB extends Command{
 
     @Override
     public Collection<Comic> run() {
-        Collection<Comic> addresult = new ArrayList<>();//Add array list to satisfy return type
+        addResult = new ArrayList<>();//Add array list to satisfy return type
         Comic currComic = db.getComic(info);
         uc.addComicToUser(currComic);
-        addresult.add(currComic);
+        addResult.add(currComic);
 
-            //TODO add a case where there is no matcing comic for the id the user entered.
+            //TODO add a case where there is no matching comic for the id the user entered.
 
-        return addresult;
+        Result addResultVisitor = new AddResult();
+        setResultString(getResult(addResultVisitor));
+        return addResult;
     }
 
     @Override
     public Collection<Comic> getCollection() {
-        return null;
+        return addResult;
     }
 
     @Override
     public String getResult(Result result) {
-        return null;
+        return result.visit(this);
     }
-
 
     @Override
     public String undo() {
@@ -50,11 +57,11 @@ public class AddFromDB extends Command{
 
     @Override
     public void setResultString(String s) {
-
+        this.resultString = s;
     }
 
     @Override
     public String toString() {
-        return null;
+        return resultString;
     }
 }
