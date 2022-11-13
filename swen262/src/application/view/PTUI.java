@@ -43,8 +43,26 @@ public class PTUI {
         else if(infoMessage.equals("3")){
 
         }
-        else if(infoMessage.equals("4")){
+        else if(infoMessage==CommandType.EDIT){
+            System.out.println("Select which field you would like to edit. You will select the comic after...\n" +
+                    "1: Series\n" +
+                    "2: Issue\n" +
+                    "3: Title\n" +
+                    "4: Description\n" +
+                    "5: Publisher\n" +
+                    "6: Release Date\n" +
+                    "7: Format\n" +
+                    "8: Add Date\n" +
+                    "9: Creators");
 
+        }
+        else if(infoMessage==CommandType.EDITSELECT){
+            System.out.println("1: Select 1 if you already know the comics ID\n" +
+                    "2: Select 2 if you wish to browse your collection");
+        }
+        else if(infoMessage==CommandType.EDITCOMPLETE){
+            System.out.println("Enter the ID of the comic you want to edit and the new value for the attribute you want to change in the following format...\n" +
+                    "(ID:NEWVALUE)");
         }
         else if(infoMessage==CommandType.MARK){
             System.out.println("1: Grade a comic\n" +
@@ -52,7 +70,8 @@ public class PTUI {
         }
 
         else if(infoMessage==CommandType.BROWSE){
-            System.out.println("1: Entire Collection\n" +
+            System.out.println("Search through your personal collection...\n" +
+                    "1: Entire Collection\n" +
                     "2: Publishers\n" +
                     "3: Series\n" +
                     "4: Volumes\n" +

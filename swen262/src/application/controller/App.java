@@ -37,7 +37,7 @@ public class App {
             input = new Scanner(System.in);
             System.out.println("Input variable succesfully created");
             System.out.println("Getting command type");
-            CommandType commandType = getCommandType();
+            CommandType commandType = getCommandType(ForceCommand.NONE);
             System.out.println("Succesfully retrieved Command type");
             System.out.println("Asking user for command arguments");
             String commandArgs = input.nextLine();//Search criteria
@@ -97,7 +97,7 @@ public class App {
                 //commandHistory.add(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
-            //
+            // BROWSE
             else if(commandType==CommandType.BROWSECOLLECTION||commandType==CommandType.BROWSEPUBLISHERS||commandType==CommandType.BROWSESERIES||commandType==CommandType.BROWSEISSUES||commandType==CommandType.BROWSEVOLUMES){
                 String searchCriteria;
                 if (commandType==CommandType.BROWSECOLLECTION){
@@ -111,6 +111,32 @@ public class App {
             }
 
             //----------------------------------------------------------------------------------------------------------
+            // EDIT
+            else if(commandType==CommandType.EDITSERIES||commandType==CommandType.EDITISSUE||commandType==CommandType.EDITTITLE||commandType==CommandType.EDITDESCRIPTION||commandType==CommandType.EDITRELEASEDATE||commandType==CommandType.EDITPUBLISHER||commandType==CommandType.EDITFORMAT||commandType==CommandType.EDITADDDATE||commandType==CommandType.EDITCREATORS){
+                if (commandArgs.equals("1")){
+
+                }
+                else{
+                    CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
+                    String searchCriteria;
+                    if (browseInstance==CommandType.BROWSECOLLECTION){
+                        searchCriteria = "";
+                    }
+                    else{
+                        searchCriteria = commandArgs;
+                    }
+                    Command currCommand = new Browse(commandType, searchCriteria, db, user);
+                    Collection<Comic> browseresult = currCommand.run();
+                }
+                view.handleCommandSelection(CommandType.EDITCOMPLETE);
+                Scanner editScanner = new Scanner(System.in);
+                String editCriteria = editScanner.nextLine();
+                Command currCommand = new Edit(commandType,editCriteria,db,user);
+                Collection<Comic> editResult = currCommand.run();
+
+            }
+
+            //----------------------------------------------------------------------------------------------------------
             //
             else{
 
@@ -120,13 +146,18 @@ public class App {
 
 
     //TODO Handle Error command code
-    private CommandType getCommandType(){
+    private CommandType getCommandType(ForceCommand forced){
         System.out.println("Create boolean to check if command type has been decided");
         Boolean firstE = true;
         System.out.println("Boolean Created");
         System.out.println("Creating String based off users next input");
-        String userInput = input.nextLine();
-        System.out.println("User input: "+userInput);
+        String userInput;
+        if (forced==ForceCommand.NONE){
+             userInput = input.nextLine();
+        }
+        else{
+            userInput = "forced";
+        }
         System.out.println("Declare a commandtype enum to return once initialized");
         CommandType commandCode = null;
         System.out.println("enum declared");
@@ -193,7 +224,41 @@ public class App {
             }
             else if(userInput.equals("4")){
                 firstE = false;
-                commandCode = CommandType.EDIT;
+                view.handleCommandSelection(CommandType.EDIT);
+                String editTypeInput = input.nextLine();
+                if (editTypeInput.equals("1")){
+                    commandCode = CommandType.EDITSERIES;
+                }
+                else if (editTypeInput.equals("2")){
+                    commandCode = CommandType.EDITISSUE;
+                }
+                else if (editTypeInput.equals("3")){
+                    commandCode = CommandType.EDITTITLE;
+                }
+                else if (editTypeInput.equals("4")){
+                    commandCode = CommandType.EDITDESCRIPTION;
+                }
+                else if (editTypeInput.equals("5")){
+                    commandCode = CommandType.EDITPUBLISHER;
+                }
+                else if (editTypeInput.equals("6")){
+                    commandCode = CommandType.EDITRELEASEDATE;
+                }
+                else if (editTypeInput.equals("7")){
+                    commandCode = CommandType.EDITFORMAT;
+                }
+                else if (editTypeInput.equals("8")){
+                    commandCode = CommandType.EDITADDDATE;
+                }
+                else if (editTypeInput.equals("9")){
+                    commandCode = CommandType.EDITCREATORS;
+                }
+                else{
+                    commandCode = CommandType.ERROR;
+                    view.handleCommandSelection(commandCode);
+                }
+                view.handleCommandSelection(CommandType.EDITSELECT);
+
             }
             else if(userInput.equals("5")){
                 firstE = false;
@@ -211,7 +276,7 @@ public class App {
                 }
                 //commandCode = CommandType.MARK;
             }
-            else if(userInput.equals("6")){
+            else if(userInput.equals("6")||forced==ForceCommand.BROWSE){
                 firstE = false;
                 view.handleCommandSelection(CommandType.BROWSE);
                 String browseTypeInput = input.nextLine();
