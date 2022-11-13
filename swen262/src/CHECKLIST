@@ -1,0 +1,67 @@
+X if Incomplete
+C if Complete
+
+R1: X
+Functional Requirements: X
+1: C
+    A Comic Book has the following attributes
+    - Publisher
+    - Series
+    - Title
+    - Issue Number
+    - Add Date
+    - Release Date
+    - Creators
+    - Description
+    - Value
+2: C
+    The App will provide a searchable database of comics
+    - Database is immutable
+    - Database provides the following fields
+        - Series
+        - Issue Number
+        - Story Title
+        - Publisher
+        - Publication Date
+        - Creators
+    - User should be able to search for comics using partial or exact matches for any field
+    - Searches are case sensitive
+3: X
+    User should be able to maintain a personal collection
+    - Adding comics from the database (Adding the ID number to the search and allow the user to select an ID bnumber to add)
+    - Adding comics manually
+    - Removing Comics
+    - Editing Attributes of comics already in personal collection
+    - Marking a comic as "graded" on a scale of 1 to 10 (Value of a graded comic is adjusted with (1=value*0.10)
+    - Marking a graded comic as "slabbed". This doubles the value of the comic (Cannot be slabbed unless it is also graded)
+4: X
+    User should be able to browse their personal collection
+    - Organized into a hierarchy:
+        - The entire collection
+        - Publishers
+        - Series
+        - Volumes
+        - Individual Issues
+    - The following should always be displayed while browsing
+        - Number of issues
+        - Value
+5: X
+    User Should be able to search for comics in their collection
+    - Search may be matched with any of these fields:
+        - Series
+        - Title
+        - Creator Names
+        - Description
+    - User should be able to specify whether they want exact or partial matches
+    - Search results should be sortable by
+        - Series
+        - Title
+        - Volume
+        - Issue Number
+        - Publication Date
+
+Non-Functional Requirements: X
+1: X
+    Initial Version required a PTUI
+2: X
+    The user profile must be stored in between uses of application
