@@ -24,8 +24,6 @@ public class ComixDatabase implements Database{
 
     //Constructor
     public ComixDatabase(String path){
-        System.out.println("Created Database Object");
-        System.out.println("Initializing Database");
         init(path);
     }
 
@@ -34,12 +32,8 @@ public class ComixDatabase implements Database{
      * @param path - A string representing the file path
      */
     private void init(String path) {
-        System.out.println("Creating Database Arraylist");
         this.comicCollection = new ArrayList<>();//set the collection to an arraylist
-        System.out.println("Database ArrayList Created");
-        System.out.println("Parsing Database");
         parse(path);//parse the data from csv file
-        System.out.println("Database Succesfully Parsed");
     }
 
     //TODO ADD A COMIC ID REPRESENTING THE COMICS IN ORDER 1-14301, WHEN BROWSING, THE USER CAN USA A COMMAND WITH AN ID INSTEAD OF A NAME

@@ -5,7 +5,6 @@ import model.ComixDatabase;
 import model.Series;
 import model.User;
 import view.Result;
-import view.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,13 +61,28 @@ public class Browse extends Command{
     }
 
     @Override
-    public Result getResult() {
-        Result sr = new SearchResult(browseResult);
-        return sr;
+    public Collection<Comic> getCollection() {
+        return null;
     }
 
     @Override
+    public String getResult(Result result) {
+        return null;
+    }
+
+
+    @Override
     public String undo() {
+        return null;
+    }
+
+    @Override
+    public void setResultString(String s) {
+
+    }
+
+    @Override
+    public String toString() {
         return null;
     }
 }

@@ -9,9 +9,7 @@ public class User implements Database{
     Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics(); will return the list of comics in the series.
 
     public User(){
-        System.out.println("Building User database Arraylist");
         userCollection = new ArrayList<>();
-        System.out.println("User Arraylist Created");
 
         ArrayList<String> creatortemp = new ArrayList<>();
         creatortemp.add("dwhuhdu");

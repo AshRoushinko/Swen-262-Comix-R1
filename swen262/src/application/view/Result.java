@@ -1,24 +1,23 @@
 package view;
 
+import controller.Command;
 import model.Comic;
 
 import java.util.Collection;
 
 public abstract class Result {
 
-    public final String RESULT = "Result: \n";
+    public final String RESULTHEADER = "Result: \n";
     public final String BARRIER = "-----------------------------------------------------------------------------------";
-    public Collection<Comic> collection;
 
-    public Result(Collection<Comic> collection){
-        this.collection = collection;
+    public Result(){
+
     }
 
-    public Collection<Comic> getResultCollection(){
-        return this.collection;
-    }
+    public abstract String visit(Command command);
 
-    @Override
-    public abstract String toString();
+    public String buildString(String s){
+        return RESULTHEADER+s+BARRIER+"\n";
+    }
 
 }

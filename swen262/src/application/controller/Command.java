@@ -26,7 +26,9 @@ public abstract class Command {
 
     public abstract Collection<Comic> run();
 
-    public abstract Result getResult();
+    public abstract Collection<Comic> getCollection();
+
+    public abstract String getResult(Result result);
 
     public abstract String undo();
 
@@ -34,39 +36,7 @@ public abstract class Command {
         return this.commandType;
     }
 
-    /**
-     * This method handles the search operation.
-     * Param - content: includes a string representing a name or partial name of the comic(s) to search for.
-     * Return - The Book(s) that were found in the search.
-     */
+    public abstract void setResultString(String s);
 
-    /**
-    private void addFromDB(){
-
-    }
-
-    private void addFromInput(){
-
-    }
-
-    private void remove(){
-
-    }
-
-    private void edit(){
-
-    }
-
-    private void mark(){
-
-    }
-
-    private void browse(){
-
-    }
-
-    private void storeProfile(){
-
-    }**/
-
+    public abstract String toString();
 }

@@ -32,12 +32,27 @@ public class Remove extends Command{
     }
 
     @Override
-    public Result getResult() {
+    public Collection<Comic> getCollection() {
+        return null;
+    }
+
+    @Override
+    public String getResult(Result result) {
         return null;
     }
 
     @Override
     public String undo() {
+        return null;
+    }
+
+    @Override
+    public void setResultString(String s) {
+
+    }
+
+    @Override
+    public String toString() {
         return null;
     }
 }

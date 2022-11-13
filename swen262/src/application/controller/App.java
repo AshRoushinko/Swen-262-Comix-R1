@@ -5,12 +5,14 @@ import model.ComixDatabase;
 import model.User;
 import view.PTUI;
 import view.Result;
+import view.SearchResult;
 
 import java.util.*;
 
 public class App {
 
     private final String FILEPATH = "swen262/comics.csv";
+
 
     private Stack commandHistory;
 
@@ -22,26 +24,19 @@ public class App {
     private Boolean running;
 
     public App(){
-        System.out.println("App Created");
+        System.out.println("APP STARTED");
     }
 
     //TODO add a signin command (Store each profile in one csv file) SIGNOUT COMMAND WILL STORE THE PROFILE.
 
+    //TODO add functionality for undoing a command
+
     public void run(){
-        System.out.println("Application succesfully Started");
-        System.out.println("Setting running value to true");
         running = true;
-        System.out.println("Beginning Operations");
         while (running){
-            System.out.println("Creating Scanner for user input");
             input = new Scanner(System.in);
-            System.out.println("Input variable succesfully created");
-            System.out.println("Getting command type");
             CommandType commandType = getCommandType(ForceCommand.NONE);
-            System.out.println("Succesfully retrieved Command type");
-            System.out.println("Asking user for command arguments");
             String commandArgs = input.nextLine();//Search criteria
-            System.out.println("Command args: "+commandArgs);
             if(commandType==null){
                 System.out.println("CommandType is Null");
                 running = false;
@@ -51,49 +46,29 @@ public class App {
             else if (commandType==CommandType.SEARCHEXACT||commandType==CommandType.SEARCHPARTIAL){
                 String searchCriteria = commandArgs;
                 Command currCommand = new Search(commandType, searchCriteria, db, user);
-                currCommand.run();
-                view.display(currCommand.getResult());
-                //commandHistory.add(currCommand);
+                runCommand(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
             //ADD
             else if (commandType==CommandType.ADDFROMDBEXACT||commandType==CommandType.ADDFROMDBPARTIAL){
-                //Run a search command so the user can add a comic from the search
+                //FIRST RUN A SEARCH TO SHOW ALL OF THE POSSIBLE COMICS TO ADD
                 String searchCriteria = commandArgs;
                 Command currCommand = new Search(commandType, searchCriteria, db, user);
-                currCommand.run();
-                view.display(currCommand.getResult());
-                //commandHistory.add(currCommand);
-                System.out.println("Succesfully ran a search with the given criteria");
-                System.out.println("Asking the user for the id of the comic they want to add");
+                runCommand(currCommand);
+                //THEN HANDLE ADD COMMAND
                 view.handleCommandSelection(CommandType.ADDFROMDB);
-                System.out.println("Succesfully asked the user for the comic id");
-                System.out.println("Creating scanner to retrieve the comic ID");
-                //IF THIS DOESNT WORK JUST TRY USING THE SCANNER THATS ALREADY INITIALIZED
                 Scanner addSelectionScanner = new Scanner(System.in);
-                System.out.println("SCANNER SUCCESFULLY CREATED");
-                System.out.println("CREATING STRING THAT WILL BE ASSIGNED TO THE USERS INPUT FOT THE COMIC ID");
                 String addSelection = addSelectionScanner.nextLine();
-                System.out.println("USER INPUT/COMIC ID: "+addSelection);
-                System.out.println("SETTING CURRENT COMMAND TO A NEW ADDFROMDB COMMAND");
                 currCommand = new AddFromDB(commandType, addSelection, db, user);
-                System.out.println("SUCCESSFULLY CREATED ADDFROMDB COMMAND");
-                System.out.println("RUNNING COMMAND");
                 Collection<Comic> comicToAdd = currCommand.run();// This is equal to the comic selected by the user
-                System.out.println("COMMAND WAS SUCCESSFULL");
 
-                //Result addresult = currCommand.getResult();
-                //Collection<Comic> comicToAddCF = addresult.getResultCollection();
-                //Comic comictoAdd = comicToAddCF.iterator().next();
-                //user.addComicToUser(comictoAdd);
-                //view.display(addresult);
                 //commandHistory.add(currCommand);
             }
             else if (commandType==CommandType.ADDFROMINPUT){
                 String searchCriteria = commandArgs;
                 Command currCommand = new AddFromInput(commandType, searchCriteria, db, user);
                 currCommand.run();
-                view.display(currCommand.getResult());
+                //view.display(currCommand.getResult());
                 //commandHistory.add(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
@@ -114,7 +89,6 @@ public class App {
             // EDIT
             else if(commandType==CommandType.EDITSERIES||commandType==CommandType.EDITISSUE||commandType==CommandType.EDITTITLE||commandType==CommandType.EDITDESCRIPTION||commandType==CommandType.EDITRELEASEDATE||commandType==CommandType.EDITPUBLISHER||commandType==CommandType.EDITFORMAT||commandType==CommandType.EDITADDDATE||commandType==CommandType.EDITCREATORS){
                 if (commandArgs.equals("1")){
-
                 }
                 else{
                     CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
@@ -144,13 +118,9 @@ public class App {
         }
     }
 
-
     //TODO Handle Error command code
     private CommandType getCommandType(ForceCommand forced){
-        System.out.println("Create boolean to check if command type has been decided");
         Boolean firstE = true;
-        System.out.println("Boolean Created");
-        System.out.println("Creating String based off users next input");
         String userInput;
         if (forced==ForceCommand.NONE){
              userInput = input.nextLine();
@@ -158,14 +128,11 @@ public class App {
         else{
             userInput = "forced";
         }
-        System.out.println("Declare a commandtype enum to return once initialized");
         CommandType commandCode = null;
-        System.out.println("enum declared");
         while (firstE){
-            System.out.println("Check the user input to determine the next prompt");
             //----------------------------------------------------------------------------------------------------------
             //SEARCH
-            if (userInput.equals("1")){
+            if (userInput.equals("1")||forced==ForceCommand.SEARCH){
                 view.handleCommandSelection(CommandType.SEARCH);
                 String searchTypeInput = input.nextLine();
                 if (searchTypeInput.equals("1")){
@@ -178,25 +145,19 @@ public class App {
                 }
                 else{
                     commandCode = CommandType.ERROR;
+                    view.handleCommandSelection(commandCode);
                 }
                 view.handleCommandSelection(commandCode);
             }
             //----------------------------------------------------------------------------------------------------------
             //ADD
             else if(userInput.equals("2")){
-                System.out.println("User Selected Add command");
                 view.handleCommandSelection(CommandType.ADD);
-                System.out.println("Printed Add Command prompt");
-                System.out.println("Getting users input for the type of add command");
                 String addTypeInput = input.nextLine();
-                System.out.println("User input: "+ addTypeInput);
                 firstE = false;
                 if (addTypeInput.equals("1")){
-                    System.out.println("User selected add from database");
-                    System.out.println("Sending search prompt to user");
                     view.handleCommandSelection(CommandType.SEARCH);
                     addTypeInput = input.nextLine();
-                    System.out.println("User input: "+ addTypeInput);
                     if (addTypeInput.equals("1")){
                         view.handleCommandSelection(CommandType.SEARCHEXACT);
                         commandCode = CommandType.ADDFROMDBEXACT;
@@ -218,10 +179,14 @@ public class App {
                     view.handleCommandSelection(commandCode);
                 }
             }
+            //----------------------------------------------------------------------------------------------------------
+            //REMOVE
             else if(userInput.equals("3")){
                 firstE = false;
                 commandCode = CommandType.REMOVE;
             }
+            //----------------------------------------------------------------------------------------------------------
+            //EDIT
             else if(userInput.equals("4")){
                 firstE = false;
                 view.handleCommandSelection(CommandType.EDIT);
@@ -260,6 +225,8 @@ public class App {
                 view.handleCommandSelection(CommandType.EDITSELECT);
 
             }
+            //----------------------------------------------------------------------------------------------------------
+            //MARK
             else if(userInput.equals("5")){
                 firstE = false;
                 view.handleCommandSelection(CommandType.MARK);
@@ -276,6 +243,8 @@ public class App {
                 }
                 //commandCode = CommandType.MARK;
             }
+            //----------------------------------------------------------------------------------------------------------
+            //BROWSE
             else if(userInput.equals("6")||forced==ForceCommand.BROWSE){
                 firstE = false;
                 view.handleCommandSelection(CommandType.BROWSE);
@@ -300,14 +269,20 @@ public class App {
                 }
                 view.handleCommandSelection(commandCode);
             }
+            //----------------------------------------------------------------------------------------------------------
+            //STOREPROFILE
             else if(userInput.equals("7")){
                 firstE = false;
                 commandCode = CommandType.STOREPROFILE;
             }
+            //----------------------------------------------------------------------------------------------------------
+            //CLOSEPROGRAM
             else if(userInput.equals("8")){
                 firstE = false;
                 commandCode = CommandType.CLOSEPROGRAM;
             }
+            //----------------------------------------------------------------------------------------------------------
+            //ERROR
             else{
                 firstE = false;
                 commandCode = CommandType.ERROR;
@@ -320,16 +295,15 @@ public class App {
         return commandCode;
     }
 
+    private void runCommand(Command command){
+        command.run();
+        view.display(command);
+    }
+
     public void init(){
-        System.out.println("Creating Database Object");
         db = new ComixDatabase(FILEPATH);
-        System.out.println("Database Succesfully Created");
-        System.out.println("Creating PTUI");
         view = new PTUI();
-        System.out.println("Successfully created PTUI");
-        System.out.println("Creating User Object");
         user = new User();
-        System.out.println("Successfully Created User Object");
         //System.out.println("Creating command history stack");
         //commandHistory = new Stack<Command>();
         //System.out.println("Successfully created command history stack");

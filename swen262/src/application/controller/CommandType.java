@@ -2,6 +2,7 @@ package controller;
 
 public enum CommandType {
     ADDFROMDB,
+    ADDSELECT,
     ADDFROMDBPARTIAL,
     ADDFROMDBEXACT,
     ADDFROMINPUT,

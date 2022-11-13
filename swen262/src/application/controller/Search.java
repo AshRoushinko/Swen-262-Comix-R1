@@ -14,6 +14,7 @@ import java.util.Iterator;
 public class Search extends Command {
 
     private Collection<Comic> searchResult;
+    private String resultString;
 
     public Search(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
@@ -28,7 +29,6 @@ public class Search extends Command {
     public Collection<Comic> run() {
         //TODO Only looks through titles, needs to look through the other fields as well
         //TODO if the input is nothing it will loop through the error message
-        //TODO display series in output
         searchResult = new ArrayList<>();
         Iterator<Series> sCollection = db.getComicCollection().iterator();
         while(sCollection.hasNext()){
@@ -47,16 +47,32 @@ public class Search extends Command {
                 }
             }
         }
-        this.searchResult = searchResult;
+        Result searchResultVisitor = new SearchResult();
+        setResultString(getResult(searchResultVisitor));
         return this.searchResult;
     }
+
     @Override
-    public Result getResult() {
-        Result sr = new SearchResult(searchResult);
-        return sr;
+    public String getResult(Result result) {
+        return result.visit(this);
     }
+
     @Override
     public String undo() {
         return ("UNDID SEARCH COMMAND");
+    }
+
+    @Override
+    public void setResultString(String s) {
+        resultString = s;
+    }
+
+    public Collection<Comic> getCollection(){
+        return searchResult;
+    }
+
+    @Override
+    public String toString() {
+        return resultString;
     }
 }

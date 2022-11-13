@@ -1,5 +1,6 @@
 package view;
 
+import controller.Command;
 import controller.CommandType;
 
 public class PTUI {
@@ -7,9 +8,7 @@ public class PTUI {
 
     //Constructor
     public PTUI() {
-        System.out.println("Initializing PTUI");
         init();
-        System.out.println("Succesfully Initialized PTUI");
     }
 
     /**
@@ -33,6 +32,10 @@ public class PTUI {
         else if(infoMessage==CommandType.ADD){
             System.out.println("1: Add From Database - Search through the database and add a comic to your personal collection\n" +
                     "2: Add From Input - Add a comic by typing in all of its information into the corresponding fields");
+        }
+        else if(infoMessage==CommandType.ADDSELECT){
+            System.out.println("1: Select 1 if you already know the comics ID\n" +
+                    "2: Select 2 if you wish to browse the Database");
         }
         else if(infoMessage==CommandType.ADDFROMDB){
             System.out.println("Enter the Comic ID of the comic you would like to add to your personal collection\nID:");
@@ -113,12 +116,11 @@ public class PTUI {
         }
     }
 
-    public void display(Result r){
+    public void display(Command r){
         System.out.println(r.toString());
     }
 
     private void init(){
-        System.out.println("Printing intro message");
         System.out.println("--WELCOME TO COMIX!!!--\n" +
                 "A comic book database...\n\n" +
                 "Enter the number of the desired command.\nHere are a list of commands:\n" +
