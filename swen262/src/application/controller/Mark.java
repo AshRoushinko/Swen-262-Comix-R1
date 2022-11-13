@@ -7,12 +7,12 @@ import view.Result;
 import java.util.Collection;
 
 public class Mark extends Command{
-    public Mark(String type, String info, Collection<Series> db, Collection<Series> uc) {
+    public Mark(CommandType type, String info, Collection<Series> db, Collection<Series> uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(String type, String info, Collection<Series> db, Collection<Series> uc) {
+    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
 
     }
 

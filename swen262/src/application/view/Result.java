@@ -21,7 +21,4 @@ public abstract class Result {
     @Override
     public abstract String toString();
 
-    //public Collection<Comic> getResCollection() {
-    //    return resCollection;
-    //}
 }

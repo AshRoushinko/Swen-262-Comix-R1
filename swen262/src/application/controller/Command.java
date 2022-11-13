@@ -8,25 +8,29 @@ import java.util.Collection;
 
 public abstract class Command {
 
-    public String type;
     public String info;
+    public CommandType commandType;
     public Collection<Series> db;
     public Collection<Series> uc;
 
-    public Command(String type, String info, Collection<Series> db, Collection<Series> uc){
-        this.type = type;
+    public Command(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc){
+        this.commandType = commandType;
         this.info = info;
         this.db = db;
         this.uc = uc;
     }
 
-    public abstract void init(String type, String info, Collection<Series> db, Collection<Series> uc);
+    public abstract void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc);
 
     public abstract Collection<Comic> run();
 
     public abstract Result getResult();
 
     public abstract String undo();
+
+    public CommandType getCommandType(){
+        return this.commandType;
+    }
 
     /**
      * This method handles the search operation.

@@ -28,7 +28,7 @@ Functional Requirements: X
     - Searches are case sensitive
 3: X
     User should be able to maintain a personal collection
-    - Adding comics from the database (Adding the ID number to the search and allow the user to select an ID bnumber to add)
+    - Adding comics from the database (Adding the ID number to the search and allow the user to select an ID number to add)
     - Adding comics manually
     - Removing Comics
     - Editing Attributes of comics already in personal collection

@@ -9,7 +9,21 @@ public class User implements Database{
     Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics(); will return the list of comics in the series.
 
     public User(){
+        System.out.println("Building User database Arraylist");
         userCollection = new ArrayList<>();
+        System.out.println("User Arraylist Created");
+        //
+        ArrayList<String> creatortemp = new ArrayList<>();
+        creatortemp.add("dwhuhdu");
+
+        Comic test = new Comic("1", "TEST", "ewfeuj","dwdhwu","diwdi","diwdi","diwdi","diwdi","diwdi",creatortemp);
+
+        Collection<Comic> temp1 = new ArrayList<>();
+        temp1.add(test);
+
+        Series temp = new Series("TEST", temp1);
+        userCollection.add(temp);
+        //
     }
 
     public Collection<Series> getComiccollection() {
@@ -36,22 +50,30 @@ public class User implements Database{
         }
     }
 
-    @Override//TODO (WILL BE THE SAME FOR COMIXDATABASE)
-    //TODO takes the provided name, searches through all of the series and returns a series object, returns null if no series are found
-    //TODO Very similar to the addComicToUser method
-    //TODO if you need help let me know
+    @Override
     public Series getSeries(String name) {
+        Iterator<Series> seriesIterator = userCollection.iterator();
+        while (seriesIterator.hasNext()){
+            Series currSeries = seriesIterator.next();
+            if (currSeries.getName().equals(name)){
+                return currSeries;
+            }
+        }
+        System.out.println("No series with the provided name");
         return null;
     }
 
-    @Override//TODO (WILL BE THE SAME FOR COMIXDATABASE)
-    //TODO A little trickier than getSeries
-    //TODO the integer id represents the number of the comic in the users collection (The first comic has an id of one, the second has an id of two and so on)
-    //TODO iterate through userCollection using an iterator; each index will be a series/collection of comics,
-    //TODO then iterate through each series/collection of comics using another iterator (There should be two loops)
-    //TODO lets say the id is 1,205. After you iterate through 1,205 comics, return the current comic.
-    //TODO if you need help let me know
+    @Override
     public Comic getComic(int id) {
+        Iterator<Series> seriesIterator = userCollection.iterator();
+        while (seriesIterator.hasNext()){
+            Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
+            Comic currComic = comicIterator.next();
+            if (currComic.getID().equals(id)){
+                return currComic;
+            }
+        }
+        System.out.println("No series with the provided name");
         return null;
     }
 

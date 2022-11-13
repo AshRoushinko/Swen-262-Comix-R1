@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Edit extends Command{
-    public Edit(String type, String info, Collection<Series> db, Collection<Series> uc) {
+    public Edit(CommandType type, String info, Collection<Series> db, Collection<Series> uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(String type, String info, Collection<Series> db, Collection<Series> uc) {
-
+    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
+        //STRING INFO EXAMPLE: "312:Batman"
+        //String id = 312
+        //String editvalue = "Batman"
+        //comic.setSeries(editvalue);
+        //comic.setTitle(editvalue);
     }
 
     /**

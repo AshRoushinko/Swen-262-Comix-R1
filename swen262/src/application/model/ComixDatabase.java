@@ -24,6 +24,8 @@ public class ComixDatabase implements Database{
 
     //Constructor
     public ComixDatabase(String path){
+        System.out.println("Created Database Object");
+        System.out.println("Initializing Database");
         init(path);
     }
 
@@ -32,11 +34,12 @@ public class ComixDatabase implements Database{
      * @param path - A string representing the file path
      */
     private void init(String path) {
-
+        System.out.println("Creating Database Arraylist");
         this.comicCollection = new ArrayList<>();//set the collection to an arraylist
-
+        System.out.println("Database ArrayList Created");
+        System.out.println("Parsing Database");
         parse(path);//parse the data from csv file
-
+        System.out.println("Database Succesfully Parsed");
     }
 
     //TODO ADD A COMIC ID REPRESENTING THE COMICS IN ORDER 1-14301, WHEN BROWSING, THE USER CAN USA A COMMAND WITH AN ID INSTEAD OF A NAME
@@ -194,11 +197,28 @@ public class ComixDatabase implements Database{
 
     @Override
     public Series getSeries(String name) {
+        Iterator<Series> seriesIterator = comicCollection.iterator();
+        while (seriesIterator.hasNext()){
+            Series currSeries = seriesIterator.next();
+            if (currSeries.getName().equals(name)){
+                return currSeries;
+            }
+        }
+        System.out.println("No series with the provided name");
         return null;
     }
 
     @Override
     public Comic getComic(int id) {
+        Iterator<Series> seriesIterator = comicCollection.iterator();
+        while (seriesIterator.hasNext()){
+            Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
+            Comic currComic = comicIterator.next();
+            if (currComic.getID().equals(id)){
+                return currComic;
+            }
+        }
+        System.out.println("No series with the provided name");
         return null;
     }
 }

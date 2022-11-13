@@ -7,12 +7,12 @@ import view.Result;
 import java.util.Collection;
 
 public class StoreProfile extends Command{
-    public StoreProfile(String type, String info, Collection<Series> db, Collection<Series> uc) {
+    public StoreProfile(CommandType type, String info, Collection<Series> db, Collection<Series> uc) {
         super(type, info, db, uc);
     }
 
     @Override
-    public void init(String type, String info, Collection<Series> db, Collection<Series> uc) {
+    public void init(CommandType commandType, String info, Collection<Series> db, Collection<Series> uc) {
 
     }
 

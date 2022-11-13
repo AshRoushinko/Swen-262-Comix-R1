@@ -31,6 +31,10 @@ public class Comic {
     }
 
     //SETTERS-----------------------------------------------------
+    public void setSeries(String series){
+        this.series = series;
+    }
+
     public void setFormat(String format) {
         this.format = format;
     }
@@ -125,7 +129,7 @@ public class Comic {
     }
 
     @Override
-    public String toString(){//TODO Make this look better
+    public String toString(){
         return "COMIC ID: "+this.id+"\nSERIES: "+this.series+"\nISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
                 "\nPUBLISHER: "+this.publisher+"\nRELEASE DATE: "+this.releaseDate+"\nFORMAT: "+this.format+"" +
                 "\nADD DATE: "+this.addDate+"\nVALUE: "+this.value+"\n------CREATORS------"+creatorsToString()+"\n--------------------\n";
