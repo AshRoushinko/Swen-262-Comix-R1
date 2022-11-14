@@ -60,7 +60,7 @@ public class PTUI {
             System.out.println("You have selected to remove a comic from your personal collection...");
         }
         else if(infoMessage==CommandType.REMOVESELECT){
-            System.out.println("1: Select 1 if you already know the comics ID\n" +
+            System.out.println("1: Select 1 if you already know the ID of the comic you would like to remove\n" +
                     "2: Select 2 if you wish to browse your Collection");
         }
         else if(infoMessage==CommandType.REMOVECOMPLETE){
@@ -89,6 +89,13 @@ public class PTUI {
         else if(infoMessage==CommandType.MARK){
             System.out.println("1: Grade a comic\n" +
                     "2: Slab a comic");
+        }
+        else if(infoMessage==CommandType.MARKGRADED){
+            System.out.println("Enter the ID of the comic you would like to grade along with the grade value...\n" +
+                    "Your entry should match this format: 'ID:GRADEVALUE'");
+        }
+        else if(infoMessage==CommandType.MARKSLABBED){
+            System.out.println("Enter the ID of the comic you would like to slab...");
         }
 
         else if(infoMessage==CommandType.BROWSE){

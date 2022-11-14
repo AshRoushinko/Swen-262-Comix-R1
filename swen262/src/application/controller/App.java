@@ -176,9 +176,69 @@ public class App {
             }
 
             //----------------------------------------------------------------------------------------------------------
-            //
-            else{
+            //REMOVE
+            else if (commandType==CommandType.REMOVESELECT){
+                if (commandArgs.equals("1")){
+                }
+                else{
+                    CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
+                    Scanner removeBrowseSelectionScanner = new Scanner(System.in);
+                    String removeBrowseCriteria;
+                    if (browseInstance==CommandType.BROWSECOLLECTION){
+                        removeBrowseCriteria = "";
 
+                    }
+                    else{
+                        removeBrowseCriteria = removeBrowseSelectionScanner.nextLine();
+                    }
+                    Command currCommand = new Browse(browseInstance, removeBrowseCriteria, db, user);
+                    runCommand(currCommand);
+                }
+                view.handleCommandSelection(CommandType.REMOVECOMPLETE);
+                Scanner removeScanner = new Scanner(System.in);
+                String removeCriteria = removeScanner.nextLine();
+                Command currCommand = new Remove(commandType, removeCriteria, db, user);
+                runCommand(currCommand);
+            }
+
+            //----------------------------------------------------------------------------------------------------------
+            //MARK
+            else if(commandType==CommandType.MARKGRADED||commandType==CommandType.MARKSLABBED){
+                if (commandArgs.equals("1")){
+                }
+                else{
+                    CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
+                    Scanner markBrowseSelectionScanner = new Scanner(System.in);
+                    String markBrowseCriteria;
+                    if (browseInstance==CommandType.BROWSECOLLECTION){
+                        markBrowseCriteria = "";
+                    }
+                    else{
+                        markBrowseCriteria = markBrowseSelectionScanner.nextLine();
+                    }
+                    Command currCommand = new Browse(browseInstance, markBrowseCriteria, db, user);
+                    runCommand(currCommand);
+                }
+                if (commandType==CommandType.MARKGRADED){
+                    view.handleCommandSelection(CommandType.MARKGRADED);
+                }
+                else{
+                    view.handleCommandSelection(CommandType.MARKSLABBED);
+                }
+                Scanner markScanner = new Scanner(System.in);
+                String markCriteria = markScanner.nextLine();
+                Command currCommand = new Mark(commandType, markCriteria, db, user);
+                runCommand(currCommand);
+            }
+
+            //----------------------------------------------------------------------------------------------------------
+            //STORE PROFILE
+
+            //----------------------------------------------------------------------------------------------------------
+            //CLOSE PROGRAM
+            else{
+                System.out.println("Command type not recognized\n" +
+                        "COMMAND TYPE: "+commandType);
             }
         }
     }
@@ -241,20 +301,6 @@ public class App {
                 if (addTypeInput.equals("1")){
                     commandCode = CommandType.ADDFROMDB;
                     view.handleCommandSelection(CommandType.ADDSELECT);
-                    /**
-                    view.handleCommandSelection(CommandType.SEARCH);
-                    addTypeInput = input.nextLine();
-                    if (addTypeInput.equals("1")){
-                        view.handleCommandSelection(CommandType.SEARCHEXACT);
-                        commandCode = CommandType.ADDFROMDBEXACT;
-                    }
-                    else if (addTypeInput.equals("2")){
-                        view.handleCommandSelection(CommandType.SEARCHPARTIAL);
-                        commandCode = CommandType.ADDFROMDBPARTIAL;
-                    }
-                    else{
-                        commandCode = CommandType.ERROR;
-                    }*/
                 }
                 else if (addTypeInput.equals("2")){
                     commandCode = CommandType.ADDFROMINPUT;
@@ -269,7 +315,9 @@ public class App {
             //REMOVE
             else if(userInput.equals("3")){
                 firstE = false;
-                commandCode = CommandType.REMOVE;
+                commandCode = CommandType.REMOVESELECT;
+                view.handleCommandSelection(CommandType.REMOVE);
+                view.handleCommandSelection(commandCode);
             }
             //----------------------------------------------------------------------------------------------------------
             //EDIT
@@ -318,16 +366,16 @@ public class App {
                 view.handleCommandSelection(CommandType.MARK);
                 String markTypeInput = input.nextLine();
                 if(markTypeInput.equals("1")){
-                    view.handleCommandSelection(CommandType.GRADE);
+                    commandCode = CommandType.MARKGRADED;
                 }
                 else if (markTypeInput.equals("2")){
-
+                    commandCode = CommandType.MARKSLABBED;
                 }
                 else{
                     commandCode = CommandType.ERROR;
                     view.handleCommandSelection(commandCode);
                 }
-                //commandCode = CommandType.MARK;
+                view.handleCommandSelection(CommandType.EDITSELECT);
             }
             //----------------------------------------------------------------------------------------------------------
             //BROWSE

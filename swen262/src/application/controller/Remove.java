@@ -26,11 +26,8 @@ public class Remove extends Command{
     @Override
     public Collection<Comic> run() {
         removeResult = new ArrayList<>();
-        //Iterate through the user collection until you find a comic that matches the id represented by the info variable
-        //Collection<Series> = user.getCollection
-        //TODO
-
-
+        Comic removedComic = uc.removeComic(info);
+        removeResult.add(removedComic);
         Result removeResultVisitor = new RemoveResult();
         setResultString(getResult(removeResultVisitor));
         return this.removeResult;

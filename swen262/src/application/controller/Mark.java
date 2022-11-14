@@ -4,6 +4,8 @@ import model.Comic;
 import model.ComixDatabase;
 import model.Series;
 import model.User;
+import view.AddResult;
+import view.MarkResult;
 import view.Result;
 
 import java.util.ArrayList;
@@ -26,8 +28,24 @@ public class Mark extends Command{
     @Override
     public Collection<Comic> run() {
         markResult = new ArrayList<>();
-
-
+        if (commandType==CommandType.MARKGRADED){//TODO handle case where book is already graded
+            String[] gradeinfosplit = info.split(":");
+            String id = gradeinfosplit[0];
+            String value = gradeinfosplit[1];
+            System.out.println("ID: "+id);
+            System.out.println("Value: "+value);
+            Comic comicToMark = uc.getComic(id);
+            comicToMark.grade(value);
+            markResult.add(comicToMark);
+            System.out.println(comicToMark.getValue());
+        }
+        else{//SLABBED //TODO handle case where book is already slabbed or not graded
+            Comic comicToMark = uc.getComic(info);
+            comicToMark.slab();
+            markResult.add(comicToMark);
+        }
+        Result markResultVisitor = new MarkResult();
+        setResultString(getResult(markResultVisitor));
         return markResult;
     }
 

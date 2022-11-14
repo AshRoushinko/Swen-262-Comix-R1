@@ -2,6 +2,7 @@ package model;
 
 import model.Comic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -25,6 +26,17 @@ public class Series {
 
     public void addComic(Comic c){
         this.comics.add(c);
+    }
+
+    public void removeComic(Comic comic){
+        Iterator<Comic> cI = comics.iterator();
+        while (cI.hasNext()){
+            Comic currComic = cI.next();
+            if (currComic==comic){
+                cI.remove();
+                break;
+            }
+        }
     }
 
     @Override

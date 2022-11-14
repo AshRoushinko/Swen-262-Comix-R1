@@ -130,8 +130,48 @@ public class Comic {
 
     @Override
     public String toString(){
-        return "--------------------\nCOMIC ID: "+this.id+"\nSERIES: "+this.series+"\nISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
+        String returnString = "--------------------\nCOMIC ID: "+this.id+"\nSERIES: "+this.series+"\nISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +
                 "\nPUBLISHER: "+this.publisher+"\nRELEASE DATE: "+this.releaseDate+"\nFORMAT: "+this.format+"" +
-                "\nADD DATE: "+this.addDate+"\nVALUE: "+this.value+"\n------CREATORS------"+creatorsToString()+"\n--------------------\n====================\n";
+                "\nADD DATE: "+this.addDate+"\n";
+        if (value==0.0){
+            returnString = returnString+"VALUE: No Value\n";
+        }
+        else{
+            returnString = returnString+"VALUE: "+this.value+"\n";
+        }
+        returnString = returnString+"------CREATORS------"+creatorsToString()+"\n--------------------\n====================\n";
+        return returnString;
+    }
+
+    //OTHER METHODS --------------------------------
+    private Boolean isGraded(){
+        return isGraded;
+    }
+    private Boolean isSlabbed(){
+        return isSlabbed;
+    }
+    public Boolean grade(String num){
+        if (isGraded()){
+            return false;
+        }
+        int gradeValue = Integer.parseInt(num);
+        value = 0.1*gradeValue;
+        isGraded = true;
+        return true;
+    }
+    public Boolean slab(){
+        if (isSlabbed()){
+            return false;
+        }
+        else{
+            if (isGraded()){
+                value = value*2;
+                isSlabbed = true;
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
     }
 }

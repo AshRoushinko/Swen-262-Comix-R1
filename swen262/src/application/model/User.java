@@ -91,9 +91,11 @@ public class User implements Database{
         }
     }
 
-    public Comic removeComic(String id){
+    public Comic removeComic(String id){//TODO if there is no comic with the provided id
         Comic comicToRemove = getComic(id);
-        userCollection.remove(comicToRemove);
+        String comicToRemoveSeriesName = comicToRemove.getSeries();
+        Series comicToRemoveSeries = getSeries(comicToRemoveSeriesName);
+        comicToRemoveSeries.removeComic(comicToRemove);
         return comicToRemove;
     }
 
