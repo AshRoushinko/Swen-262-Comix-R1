@@ -23,11 +23,24 @@ public class PTUI {
                     "1: Exact Search - Will only show comics with content identical to search parameters.\n" +
                     "2: Partial Search - Will show all comics that include the search parameters.");
         }
+        else if (infoMessage==CommandType.SEARCHSELECT){
+            System.out.println("Select which field you would like to search for...\n" +
+                    "1: Series\n" +
+                    "2: Issue\n" +
+                    "3: Title\n" +
+                    "4: Publisher\n" +
+                    "5: Add Date\n" +
+                    "6: Creator(s)\n");
+        }
         else if(infoMessage==CommandType.SEARCHEXACT){
             System.out.println("Exact Search: ");
         }
         else if(infoMessage==CommandType.SEARCHPARTIAL){
             System.out.println("Partial Search: ");
+        }
+        else if(infoMessage==CommandType.SEARCHCREATORS){
+            System.out.println("You can search for a single creator or a collaboration of two or more creators...\n" +
+                    "If you wish to search for collaborations, use this format: 'Creator1|Creator2|Creator3|...'");
         }
         else if(infoMessage==CommandType.ADD){
             System.out.println("1: Add From Database - Search through the database and add a comic to your personal collection\n" +
@@ -64,7 +77,6 @@ public class PTUI {
                     "7: Format\n" +
                     "8: Add Date\n" +
                     "9: Creators");
-
         }
         else if(infoMessage==CommandType.EDITSELECT){
             System.out.println("1: Select 1 if you already know the comics ID\n" +

@@ -49,9 +49,30 @@ public class App {
             }
             //----------------------------------------------------------------------------------------------------------
             //SEARCH
-            else if (commandType==CommandType.SEARCHEXACT||commandType==CommandType.SEARCHPARTIAL){
+            else if (commandType==CommandType.SEARCHSERIES||commandType==CommandType.SEARCHISSUE||commandType==CommandType.SEARCHTITLE||commandType==CommandType.SEARCHPUBLISHER||commandType==CommandType.SEARCHADDDATE||commandType==CommandType.SEARCHCREATORS){
+                String commandInfo = "";
                 String searchCriteria = commandArgs;
-                Command currCommand = new Search(commandType, searchCriteria, db, user);
+                if (searchCriteria.equals("1")){
+                    commandInfo = commandInfo+"EXACT";
+                    if (commandType==CommandType.SEARCHCREATORS){
+                        view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                    }
+                    view.handleCommandSelection(CommandType.SEARCHEXACT);
+                }
+                else if (searchCriteria.equals("2")){
+                    commandInfo = commandInfo+"PARTIAL";
+                    if (commandType==CommandType.SEARCHCREATORS){
+                        view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                    }
+                    view.handleCommandSelection(CommandType.SEARCHPARTIAL);
+                }
+                else{
+                    System.out.print("Invalid entry"); //TODO
+                }
+                Scanner searchCriteriaSelectionScanner = new Scanner(System.in);
+                String searchCriteriaSelection = searchCriteriaSelectionScanner.nextLine();
+                commandInfo = commandInfo+":"+searchCriteriaSelection;
+                Command currCommand = new Search(commandType, commandInfo, db, user);
                 runCommand(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
@@ -61,16 +82,41 @@ public class App {
                 }
                 else{
                     //RUN A SEARCH TO SHOW ALL OF THE POSSIBLE COMICS TO ADD
+                    String commandInfo = "";
                     CommandType searchInstance = getCommandType(ForceCommand.SEARCH);
                     Scanner addSearchSelectionScanner = new Scanner(System.in);
                     String addSearchSelection = addSearchSelectionScanner.nextLine();
-                    Command currCommand = new Search(searchInstance, addSearchSelection, db, user);
+                    String searchCriteria = addSearchSelection;
+                    if (searchCriteria.equals("1")){
+                        commandInfo = commandInfo+"EXACT";
+                        if (searchInstance==CommandType.SEARCHCREATORS){
+                            view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                        }
+                        view.handleCommandSelection(CommandType.SEARCHEXACT);
+                    }
+                    else if (searchCriteria.equals("2")){
+                        commandInfo = commandInfo+"PARTIAL";
+                        if (searchInstance==CommandType.SEARCHCREATORS){
+                            view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                        }
+                        view.handleCommandSelection(CommandType.SEARCHPARTIAL);
+                    }
+                    else{
+                        System.out.print("Invalid entry"); //TODO
+                    }
+                    Scanner searchCriteriaSelectionScanner = new Scanner(System.in);
+                    String searchCriteriaSelection = searchCriteriaSelectionScanner.nextLine();
+                    commandInfo = commandInfo+":"+searchCriteriaSelection;
+                    System.out.println("CommandInfo: "+commandInfo);
+                    System.out.println("Command Type: "+searchInstance);
+                    Command currCommand = new Search(searchInstance, commandInfo, db, user);
                     runCommand(currCommand);
                 }
                 //HANDLE ADD COMMAND
                 view.handleCommandSelection(CommandType.ADDFROMDB);
                 Scanner addSelectionScanner = new Scanner(System.in);
                 String addSelection = addSelectionScanner.nextLine();
+                System.out.println("");
                 Command currCommand = new AddFromDB(commandType, addSelection, db, user);
                 runCommand(currCommand);
 
@@ -152,20 +198,39 @@ public class App {
             //----------------------------------------------------------------------------------------------------------
             //SEARCH
             if (userInput.equals("1")||forced==ForceCommand.SEARCH){
-                view.handleCommandSelection(CommandType.SEARCH);
+                view.handleCommandSelection(CommandType.SEARCHSELECT);
                 String searchTypeInput = input.nextLine();
                 if (searchTypeInput.equals("1")){
                     firstE = false;
-                    commandCode = CommandType.SEARCHEXACT;
+                    commandCode = CommandType.SEARCHSERIES;
                 }
                 else if (searchTypeInput.equals("2")){
                     firstE = false;
-                    commandCode = CommandType.SEARCHPARTIAL;
+                    commandCode = CommandType.SEARCHISSUE;
+                }
+                else if (searchTypeInput.equals("3")){
+                    firstE = false;
+                    commandCode = CommandType.SEARCHTITLE;
+                }
+                else if (searchTypeInput.equals("4")){
+                    firstE = false;
+                    commandCode = CommandType.SEARCHPUBLISHER;
+                }
+                else if (searchTypeInput.equals("5")){
+                    firstE = false;
+                    commandCode = CommandType.SEARCHADDDATE;
+                }
+                else if (searchTypeInput.equals("6")){
+                    firstE = false;
+                    commandCode = CommandType.SEARCHCREATORS;
                 }
                 else{
                     commandCode = CommandType.ERROR;
+                    view.handleCommandSelection(commandCode);
                 }
-                view.handleCommandSelection(commandCode);
+                if (!(commandCode==CommandType.ERROR)){
+                    view.handleCommandSelection(CommandType.SEARCH);
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //ADD
