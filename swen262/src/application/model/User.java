@@ -91,6 +91,12 @@ public class User implements Database{
         }
     }
 
+    public Comic removeComic(String id){
+        Comic comicToRemove = getComic(id);
+        userCollection.remove(comicToRemove);
+        return comicToRemove;
+    }
+
     private void addSeries(Series series){
         userCollection.add(series);
     }
