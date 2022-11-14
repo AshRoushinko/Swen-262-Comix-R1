@@ -37,7 +37,6 @@ public class Mark extends Command{
             Comic comicToMark = uc.getComic(id);
             comicToMark.grade(value);
             markResult.add(comicToMark);
-            System.out.println(comicToMark.getValue());
         }
         else{//SLABBED //TODO handle case where book is already slabbed or not graded
             Comic comicToMark = uc.getComic(info);

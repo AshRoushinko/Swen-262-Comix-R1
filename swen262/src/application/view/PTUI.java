@@ -128,8 +128,20 @@ public class PTUI {
         else if(infoMessage.equals("7")){
 
         }
-        else if(infoMessage.equals("8")){
+        else if(infoMessage==CommandType.CLOSEPROGRAM){
+            System.out.print("STOPPING PROGRAM..");
 
+        }
+        else if(infoMessage==CommandType.CONTINUE){
+            System.out.println("1: Search Database for Comics\n" +
+                    "2: Add to Collection\n" +
+                    "3: Remove from Collection\n" +
+                    "4: Edit Comic in Collection\n" +
+                    "5: Mark Comic in Collection\n" +
+                    "6: Browse Personal Collection\n" +
+                    "7: Store Profile\n" +
+                    "8: Close Program\n\n" +
+                    "INPUT: ");
         }
         //--------------------------------------------------------------------------------------------------------------
         //Run command info messages

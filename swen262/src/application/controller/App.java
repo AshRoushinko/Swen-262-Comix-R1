@@ -40,6 +40,10 @@ public class App {
             if (commandType==CommandType.BROWSECOLLECTION){
                 commandArgs = "";
             }
+            else if (commandType==CommandType.CLOSEPROGRAM){
+                running = false;
+                break;
+            }
             else{
                 commandArgs = input.nextLine();//Search criteria
             }
@@ -126,8 +130,25 @@ public class App {
             }
             else if (commandType==CommandType.ADDFROMINPUT){
                 //TODO
-                String searchCriteria = commandArgs;
-                Command currCommand = new AddFromInput(commandType, searchCriteria, db, user);
+                String newComicstr = commandArgs;
+                //TODO MOVE THESE PRINT STATEMENTS TO PTUI
+                System.out.println("Issue: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Title: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Description: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Publisher: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Release Date: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Format: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Add Date: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                System.out.println("Creator: ");
+                newComicstr = newComicstr+":"+input.nextLine();
+                Command currCommand = new AddFromInput(commandType, newComicstr, db, user);
                 runCommand(currCommand);
 
                 //TODO
@@ -234,12 +255,12 @@ public class App {
             //----------------------------------------------------------------------------------------------------------
             //STORE PROFILE
 
-            //----------------------------------------------------------------------------------------------------------
-            //CLOSE PROGRAM
+
             else{
                 System.out.println("Command type not recognized\n" +
                         "COMMAND TYPE: "+commandType);
             }
+            view.handleCommandSelection(CommandType.CONTINUE);
         }
     }
 
@@ -414,6 +435,7 @@ public class App {
             else if(userInput.equals("8")){
                 firstE = false;
                 commandCode = CommandType.CLOSEPROGRAM;
+                view.handleCommandSelection(commandCode);
             }
             //----------------------------------------------------------------------------------------------------------
             //ERROR

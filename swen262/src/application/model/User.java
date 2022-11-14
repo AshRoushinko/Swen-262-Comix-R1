@@ -8,8 +8,12 @@ public class User implements Database{
 
     Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics(); will return the list of comics in the series.
 
+    public int currentNextID;
+
     public User(){
         userCollection = new ArrayList<>();
+
+        currentNextID = 14302;
 
         ArrayList<String> creatortemp = new ArrayList<>();
         creatortemp.add("dwhuhdu");
@@ -91,12 +95,21 @@ public class User implements Database{
         }
     }
 
+    public int getCurrentNextID(){
+        return this.currentNextID;
+    }
+
     public Comic removeComic(String id){//TODO if there is no comic with the provided id
         Comic comicToRemove = getComic(id);
         String comicToRemoveSeriesName = comicToRemove.getSeries();
         Series comicToRemoveSeries = getSeries(comicToRemoveSeriesName);
         comicToRemoveSeries.removeComic(comicToRemove);
         return comicToRemove;
+    }
+
+    public void addCustomComicToUser(Comic comic){
+        addComicToUser(comic);
+        currentNextID++;
     }
 
     private void addSeries(Series series){

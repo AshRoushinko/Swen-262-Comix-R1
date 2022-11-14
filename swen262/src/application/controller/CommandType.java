@@ -44,5 +44,6 @@ public enum CommandType {
     SEARCHSELECT,
     STOREPROFILE,
     ERROR,
-    CLOSEPROGRAM
+    CLOSEPROGRAM,
+    CONTINUE
 }
