@@ -10,28 +10,31 @@ import view.Result;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+//Purpose - A command that allows the user to mark a comic in their personal collection
 public class Mark extends Command{
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> markResult;
     private String resultString;
-
+    private String id;
+    private String value;
+    //------------------------------------------------------------------------------------------------------------------
+    //STRING INFO FORMAT: (IF GRADED)'ID:GRADEVALUE' ||| (IF SLABBED)'ID'
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         markResult = new ArrayList<>();
         if (commandType==CommandType.MARKGRADED){//TODO handle case where book is already graded
             String[] gradeinfosplit = info.split(":");
-            String id = gradeinfosplit[0];
-            String value = gradeinfosplit[1];
+            id = gradeinfosplit[0];
+            value = gradeinfosplit[1];
             System.out.println("ID: "+id);
             System.out.println("Value: "+value);
             Comic comicToMark = uc.getComic(id);
@@ -47,7 +50,8 @@ public class Mark extends Command{
         setResultString(getResult(markResultVisitor));
         return markResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public Collection<Comic> getCollection() {
         return markResult;
@@ -60,7 +64,13 @@ public class Mark extends Command{
 
     @Override
     public String undo() {
-        return null;
+        if (commandType==CommandType.MARKGRADED){
+            uc.getComic(id).ungrade();
+        }
+        else if (commandType==CommandType.MARKSLABBED){
+            uc.getComic(info).unslabb();
+        }
+        return "Undid mark";
     }
 
     @Override

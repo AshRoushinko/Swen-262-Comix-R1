@@ -11,21 +11,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
+//Purpose - A command that allows the user to search the database for comics
 public class Search extends Command {
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> searchResult;
     private String resultString;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //STRING INFO FORMAT: 'EXACTorPARTIAL:SEARCHCRITERIA'
     public Search(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         //TODO Only looks through titles, needs to look through the other fields as well
@@ -157,7 +158,8 @@ public class Search extends Command {
         setResultString(getResult(searchResultVisitor));
         return searchResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public String getResult(Result result) {
         return result.visit(this);

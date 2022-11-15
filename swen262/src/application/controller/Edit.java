@@ -11,30 +11,30 @@ import view.Result;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+//Purpose - A command that allows the user to edit a comic and change any attribute
 public class Edit extends Command{
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> editResult;
     private String resultString;
     private String id;
-
+    private Comic original;
+    private String value;
+    //------------------------------------------------------------------------------------------------------------------
+    //STRING INFO FORMAT: 'ID:CHANGEVALUE'
     public Edit(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
-        //STRING INFO EXAMPLE: "312:Batman"
-        //String id = 312
-        //String editvalue = "Batman"
-        //comic.setSeries(editvalue);
-        //comic.setTitle(editvalue);
+        String[] editValueSplit = info.split(":");
+        id = editValueSplit[0];
+        value = editValueSplit[1];
+        Comic temp =  uc.getComic(id);
+        original = temp.copy();
+        //OR JUST STORE THE ORIGINAL VALUE OF THE CHANGED ATTRIBUTE
     }
-
-    /**
-     * Purpose - runs the edit command
-     * @return - A collection of comics (for this command there will only be one comic in the returned collection (it will be the edited comic)
-     */
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         //TODO - will do this if we have time but not important; setup code that will handle input with multiple :
@@ -51,18 +51,12 @@ public class Edit extends Command{
 
 
 
-        //TODO - this is a test, delete when the edit command is fully functional
-        Iterator<Comic> test = editResult.iterator();
-        while (test.hasNext()){
-            System.out.println(test.next().toString());
-        }
-
-
         Result editResultVisitor = new EditResult();
         setResultString(getResult(editResultVisitor));
         return editResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     public String getID(){
         return this.id;
     }

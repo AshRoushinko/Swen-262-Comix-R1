@@ -12,19 +12,19 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class Browse extends Command{
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> browseResult;
     private String resultString;
-
+    //------------------------------------------------------------------------------------------------------------------
     public Browse(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         browseResult = new ArrayList<>();
@@ -62,7 +62,8 @@ public class Browse extends Command{
         setResultString(getResult(browseResultVisitor));
         return browseResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public Collection<Comic> getCollection() {
         return browseResult;

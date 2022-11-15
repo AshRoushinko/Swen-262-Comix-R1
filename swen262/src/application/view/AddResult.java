@@ -4,7 +4,7 @@ import controller.Command;
 import model.Comic;
 
 import java.util.Iterator;
-
+//Purpose - A result that generates a string representing the outcome of Adding a comic to the users personal collection
 public class AddResult extends Result{
     @Override
     public String visit(Command command) {
