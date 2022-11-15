@@ -9,20 +9,21 @@ import view.Result;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+//Purpose - A command that allows the user to remove a command from their personal collection
 public class Remove extends Command{
+    //------------------------------------------------------------------------------------------------------------------
     Collection<Comic> removeResult;
     private String resultString;
-
+    //------------------------------------------------------------------------------------------------------------------
     public Remove(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         removeResult = new ArrayList<>();
@@ -32,7 +33,8 @@ public class Remove extends Command{
         setResultString(getResult(removeResultVisitor));
         return this.removeResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public Collection<Comic> getCollection() {
         return removeResult;

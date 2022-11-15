@@ -2,16 +2,29 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
+//Purpose - Represents a Comic Object
 public class Comic {
-
+    //------------------------------------------------------------------------------------------------------------------
     private String series, issue, title, description, releaseDate, format, addDate, publisher, id;
     private ArrayList<String> creators;
     private double value;
-
+    //------------------------------------------------------------------------------------------------------------------
     private Boolean isGraded;
     private Boolean isSlabbed;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Constructor
+    /**
+     * @param id - A string representing the id of the comic
+     * @param series - A string representing the series the comic is in
+     * @param issue - A string representing the issue number of the comic
+     * @param title - A string representing the title of the comic
+     * @param description - A string representing the description of the comic
+     * @param publisher - A string representing the publisher of the comic
+     * @param releaseDate - A string representing the release date of the comic
+     * @param format - A string representing the format of the comic
+     * @param addDate - A string representing the add date of the comic
+     * @param creators - An Arraylist of strings representing the creator(s) of the comic
+     */
     public Comic(String id, String series, String issue, String title, String description,
                  String publisher, String releaseDate, String format, String addDate, ArrayList<String> creators){
         this.id = id;
@@ -24,12 +37,10 @@ public class Comic {
         this.format = format;
         this.addDate = addDate;
         this.creators = creators;
-        //TODO implement value
         this.value = 0.0;
         isGraded = false;
         isSlabbed = false;
     }
-
     //SETTERS-----------------------------------------------------
     public void setSeries(String series){
         this.series = series;
@@ -113,7 +124,6 @@ public class Comic {
     }
 
     //VIEW METHODS ---------------------------------
-
     public String creatorsToString(){
         String cString = "";
 
@@ -127,7 +137,6 @@ public class Comic {
         }
         return cString;
     }
-
     @Override
     public String toString(){
         String returnString = "--------------------\nCOMIC ID: "+this.id+"\nSERIES: "+this.series+"\nISSUE: "+this.issue+"\nTITLE: "+this.title+"\nDESCRIPTION: "+this.description+"" +

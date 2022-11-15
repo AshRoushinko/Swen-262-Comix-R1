@@ -5,7 +5,7 @@ import model.Comic;
 
 import java.util.Collection;
 import java.util.Iterator;
-
+//Purpose - A result that generates a string representing the outcome of Editing a comic in the users collection
 public class EditResult extends Result{
     @Override
     public String visit(Command command) {

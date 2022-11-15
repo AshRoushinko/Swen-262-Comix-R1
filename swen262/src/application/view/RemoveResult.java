@@ -2,7 +2,7 @@ package view;
 
 import controller.Command;
 import model.Comic;
-
+//Purpose - A result that generates a string representing the outcome of removing a comic from the users collection
 import java.util.Iterator;
 
 public class RemoveResult extends Result{

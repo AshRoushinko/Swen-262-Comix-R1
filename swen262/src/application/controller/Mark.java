@@ -10,21 +10,22 @@ import view.Result;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+//Purpose - A command that allows the user to mark a comic in their personal collection
 public class Mark extends Command{
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> markResult;
     private String resultString;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //STRING INFO FORMAT: (IF GRADED)'ID:GRADEVALUE' ||| (IF SLABBED)'ID'
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         markResult = new ArrayList<>();
@@ -47,7 +48,8 @@ public class Mark extends Command{
         setResultString(getResult(markResultVisitor));
         return markResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public Collection<Comic> getCollection() {
         return markResult;

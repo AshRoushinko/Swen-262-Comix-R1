@@ -21,6 +21,8 @@ public class App {
     private PTUI view;
     private Scanner input;
 
+    private Stack<Command> commandList;
+
     private Boolean running;
 
     public App(){

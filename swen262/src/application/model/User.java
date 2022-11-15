@@ -3,21 +3,19 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+//Purpose - This class represents the user object and includes all functionality relating to editing the users collection
 public class User implements Database{
-
-    Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics(); will return the list of comics in the series.
-
+    //------------------------------------------------------------------------------------------------------------------
+    Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics()); will return the list of comics in the series.
     public int currentNextID;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Constructor
     public User(){
         userCollection = new ArrayList<>();
-
         currentNextID = 14302;
-
         ArrayList<String> creatortemp = new ArrayList<>();
+        //TODO DELETE THIS VVVVVVVVV BEFORE PRESENTING AND/OR SUBMITTING
         creatortemp.add("dwhuhdu");
-
         Comic test = new Comic("1", "TEST", "ewfeuj","dwdhwu","diwdi","diwdi","diwdi","diwdi","diwdi",creatortemp);
 
         Collection<Comic> temp1 = new ArrayList<>();
@@ -33,12 +31,10 @@ public class User implements Database{
 
     @Override
     public void sort(String filters) {
-
     }
 
     @Override
     public void parse(String filename) {
-
     }
 
     @Override

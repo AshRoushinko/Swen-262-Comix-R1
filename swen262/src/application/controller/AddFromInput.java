@@ -9,21 +9,22 @@ import view.Result;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+//Purpose - A command that allows the user to add a comic to their personal collection by manually entering its attributes
 public class AddFromInput extends Command{
-
+    //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> addResult;
     private String resultString;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //STRING INFO FORMAT: 'Series:Issue:Title:Description:Publisher:ReleaseDate:Format:AddDate:Creator(s)'
     public AddFromInput(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
 
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         addResult = new ArrayList<>();
@@ -53,7 +54,8 @@ public class AddFromInput extends Command{
         setResultString(getResult(addResultVisitor));
         return addResult;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
+    //RESULT METHODS
     @Override
     public Collection<Comic> getCollection() {
         return addResult;

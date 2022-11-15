@@ -5,17 +5,22 @@ import model.Comic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+//Purpose - This class represents a series object
 public class Series {
-
+    //------------------------------------------------------------------------------------------------------------------
     private String name;
     private Collection<Comic> comics;
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Constructor
+    /**
+     * @param name - A string representing the name of the series
+     * @param comics - A collection of comics within the series
+     */
     public Series(String name, Collection<Comic> comics){
         this.comics = comics;
         this.name = name;
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     public Collection<Comic> getComics() {
         return comics;
     }
