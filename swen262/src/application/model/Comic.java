@@ -78,6 +78,10 @@ public class Comic {
         this.title = title;
     }
 
+    public void setPublisher(String publisher){
+        this.publisher = publisher;
+    }
+
     //GETTERS --------------------------------
     public String getID(){
         return id;

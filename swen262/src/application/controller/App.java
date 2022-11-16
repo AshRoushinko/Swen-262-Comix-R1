@@ -192,20 +192,20 @@ public class App {
                 else{
                     CommandType browseInstance = getCommandType(ForceCommand.BROWSE);
                     Scanner editBrowseSelectionScanner = new Scanner(System.in);
-                    String editBrowseSelection = editBrowseSelectionScanner.nextLine();
-                    String browseCriteria;
+                    String editBrowseCriteria;
                     if (browseInstance==CommandType.BROWSECOLLECTION){
-                        browseCriteria = "";
+                        editBrowseCriteria = "";
                     }
                     else{
-                        browseCriteria = editBrowseSelection;
+                        editBrowseCriteria = editBrowseSelectionScanner.nextLine();
                     }
-                    Command currCommand = new Browse(browseInstance, browseCriteria, db, user);
+                    Command currCommand = new Browse(browseInstance, editBrowseCriteria, db, user);
                     runCommand(currCommand);
                 }
                 view.handleCommandSelection(CommandType.EDITCOMPLETE);
                 Scanner editScanner = new Scanner(System.in);
                 String editCriteria = editScanner.nextLine();
+                System.out.println(editCriteria);
                 Command currCommand = new Edit(commandType,editCriteria,db,user);
                 runCommand(currCommand);
                 commandHistory.push(currCommand);
@@ -298,11 +298,11 @@ public class App {
                 if (undoInput.equals("1")){
                     currCommand.undo();
                     redoList.push(currCommand);
+                    view.handleCommandSelection(CommandType.UNDOCOMPLETE);
                 }
                 else{
                     commandHistory.push(currCommand);
                 }
-                view.handleCommandSelection(CommandType.UNDOCOMPLETE);
             }
             //----------------------------------------------------------------------------------------------------------
             //REDO
@@ -329,11 +329,11 @@ public class App {
                 if (redoInput.equals("1")){
                     currCommand.run();
                     commandHistory.push(currCommand);
+                    view.handleCommandSelection(CommandType.REDOCOMPLETE);
                 }
                 else{
                     redoList.push(currCommand);
                 }
-                view.handleCommandSelection(CommandType.REDOCOMPLETE);
             }
 
             //----------------------------------------------------------------------------------------------------------
