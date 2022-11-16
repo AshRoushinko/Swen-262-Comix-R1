@@ -93,9 +93,11 @@ public class User implements Database{
         Iterator<Series> seriesIterator = userCollection.iterator();
         while (seriesIterator.hasNext()){
             Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
-            Comic currComic = comicIterator.next();
-            if (currComic.getID().equals(id)){
-                return currComic;
+            while (comicIterator.hasNext()){
+                Comic currComic = comicIterator.next();
+                if (currComic.getID().equals(id)){
+                    return currComic;
+                }
             }
         }
         System.out.println("No comic with the provided name");
@@ -126,6 +128,7 @@ public class User implements Database{
     }
 
     public Comic removeComic(String id){//TODO if there is no comic with the provided id
+        System.out.println("ID:"+ id);
         Comic comicToRemove = getComic(id);
         String comicToRemoveSeriesName = comicToRemove.getSeries();
         Series comicToRemoveSeries = getSeries(comicToRemoveSeriesName);
