@@ -177,7 +177,8 @@ public class ComixDatabase implements Database{
     }
     //------------------------------------------------------------------------------------------------------------------
     //OTHER
-    public void sort(String filter) {
+    @Override
+    public void sort() {
         //TODO
     }
     public void display() {

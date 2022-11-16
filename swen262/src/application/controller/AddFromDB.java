@@ -17,22 +17,30 @@ public class AddFromDB extends Command{
     //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> addResult;
     private String resultString;
+    private Boolean added;
     //------------------------------------------------------------------------------------------------------------------
     public AddFromDB(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
+        init(type, info, db, uc);
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
-
+        added = false;
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
         addResult = new ArrayList<>();//Add array list to satisfy return type
         Comic currComic = db.getComic(info);
-        uc.addComicToUser(currComic);
-        addResult.add(currComic);
+        if (currComic==null){
+
+        }
+        else{
+            uc.addComicToUser(currComic);
+            addResult.add(currComic);
+            added = true;
+        }
 
             //TODO add a case where there is no matching comic for the id the user entered.
 
@@ -42,6 +50,10 @@ public class AddFromDB extends Command{
     }
     //------------------------------------------------------------------------------------------------------------------
     //RESULT METHODS
+    public Boolean isAdded(){
+        return added;
+    }
+
     @Override
     public Collection<Comic> getCollection() {
         return addResult;
@@ -55,6 +67,7 @@ public class AddFromDB extends Command{
     @Override
     public String undo() {
         uc.removeComic(info);
+        added = false;
         return "Undid the add command";
     }
 

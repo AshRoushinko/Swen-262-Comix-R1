@@ -8,9 +8,13 @@ public class Comic {
     private String series, issue, title, description, releaseDate, format, addDate, publisher, id;
     private ArrayList<String> creators;
     private double value;
+    private int signatures;
+    private int authenticatedsignatures;
     //------------------------------------------------------------------------------------------------------------------
     private Boolean isGraded;
     private Boolean isSlabbed;
+    private Boolean isSigned;
+    private Boolean isAuthenticated;
     //------------------------------------------------------------------------------------------------------------------
     //Constructor
     /**
@@ -40,6 +44,10 @@ public class Comic {
         this.value = 0.0;
         isGraded = false;
         isSlabbed = false;
+        isSigned = false;
+        isAuthenticated = false;
+        signatures = 0;
+        authenticatedsignatures = 0;
     }
     //SETTERS-----------------------------------------------------
     public void setSeries(String series){
@@ -156,12 +164,18 @@ public class Comic {
         return returnString;
     }
 
-    //OTHER METHODS --------------------------------
-    private Boolean isGraded(){
+    //OTHER METHODS FOR MARK COMMAND--------------------------------
+    public Boolean isGraded(){
         return isGraded;
     }
-    private Boolean isSlabbed(){
+    public Boolean isSlabbed(){
         return isSlabbed;
+    }
+    public Boolean isSigned(){
+        return isSigned;
+    }
+    public Boolean isAuthenticated(){
+        return isAuthenticated;
     }
     public Boolean grade(String num){
         if (isGraded()){
@@ -170,6 +184,11 @@ public class Comic {
         int gradeValue = Integer.parseInt(num);
         value = 0.1*gradeValue;
         isGraded = true;
+        if (isSigned()) {
+            for (int x = 0; x < signatures; x++){
+                value = value*1.05;
+            }
+        }
         return true;
     }
     public Boolean slab(){
@@ -187,15 +206,37 @@ public class Comic {
             }
         }
     }
-    public Comic copy(){
-        Comic copy = new Comic(id,series,issue,title,description,publisher,releaseDate,addDate,format,creators);
-        if (isGraded()){
-            copy.isGraded = true;
+    public Boolean sign(){
+        isSigned = true;
+        signatures++;
+        if(isGraded()){
+            value = value*1.05;
         }
-        if (isSlabbed()){
-            copy.isSlabbed = true;
+        return true;
+    }
+    public Boolean authenticate(){//TODO make sure the comic is already signed
+        if (isSigned()){
+            if (isGraded()){
+                if (signatures>authenticatedsignatures){
+                    authenticatedsignatures++;
+                    isAuthenticated = true;
+                    value = value*1.2;
+                    return true;
+                }
+                return false;
+            }
+            else{
+                if (signatures>authenticatedsignatures){
+                    authenticatedsignatures++;
+                    isAuthenticated = true;
+                    return true;
+                }
+                return false;
+            }
         }
-        return copy;
+        else{
+            return false;
+        }
     }
     public Boolean ungrade(){
         isGraded = false;
@@ -206,5 +247,49 @@ public class Comic {
         isSlabbed = false;
         value = value/2.0;
         return true;
+    }
+    public Boolean unsign(){
+        if (isSigned()){
+            if (signatures==1){
+                isSigned = false;
+            }
+            if (isAuthenticated()){
+                if (authenticatedsignatures==signatures){
+                    if (authenticatedsignatures==1){
+                        isAuthenticated = false;
+                    }
+                    authenticatedsignatures--;
+                    if (isGraded){
+                        value = value/1.20;
+                    }
+                }
+            }
+            else{
+                signatures--;
+                if (isGraded){
+                    value = value/1.05;
+                }
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public Boolean unAuthenticate(){
+        if (isAuthenticated()){
+            if (authenticatedsignatures==1){
+                isAuthenticated = false;
+            }
+            else{
+
+            }
+            authenticatedsignatures--;
+            value = value/1.2;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

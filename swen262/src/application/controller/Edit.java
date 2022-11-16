@@ -24,7 +24,7 @@ public class Edit extends Command{
     //STRING INFO FORMAT: 'ID:CHANGEVALUE'
     public Edit(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
-        init(commandType,info,db,uc);
+        init(type,info,db,uc);
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override

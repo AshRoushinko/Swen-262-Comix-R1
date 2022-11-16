@@ -13,16 +13,6 @@ public class User implements Database{
     public User(){
         userCollection = new ArrayList<>();
         currentNextID = 14302;
-        ArrayList<String> creatortemp = new ArrayList<>();
-        //TODO DELETE THIS VVVVVVVVV BEFORE PRESENTING AND/OR SUBMITTING
-        creatortemp.add("dwhuhdu");
-        Comic test = new Comic("1", "TEST", "ewfeuj","dwdhwu","diwdi","diwdi","diwdi","diwdi","diwdi",creatortemp);
-
-        Collection<Comic> temp1 = new ArrayList<>();
-        temp1.add(test);
-
-        Series temp = new Series("TEST", temp1);
-        userCollection.add(temp);
     }
 
     public Collection<Series> getComiccollection() {
@@ -30,11 +20,12 @@ public class User implements Database{
     }
 
     @Override
-    public void sort(String filters) {
+    public void sort(){
     }
 
     @Override
     public void parse(String filename) {
+        //TODO STORE THE CURRENT NEXT ID IN THE FILE AND UPDATE IT WHEN PARSING FILE
     }
 
     @Override

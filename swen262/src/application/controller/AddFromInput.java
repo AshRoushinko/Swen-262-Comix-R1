@@ -19,6 +19,7 @@ public class AddFromInput extends Command{
     //STRING INFO FORMAT: 'Series:Issue:Title:Description:Publisher:ReleaseDate:Format:AddDate:Creator(s)'
     public AddFromInput(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
+        init(type, info, db, uc);
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override

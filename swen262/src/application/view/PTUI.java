@@ -56,6 +56,34 @@ public class PTUI {
         else if(infoMessage==CommandType.ADDFROMINPUT){
             System.out.println("Adding comic manually...\nPlease fill out each field.\nSeries: ");
         }
+        else if(infoMessage==CommandType.ADDFROMINPUTISSUE){
+            System.out.println("ISSUE:");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTTITLE){
+            System.out.println("TITLE:");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTDESCRIPTION){
+            System.out.println("DESCRIPTION:");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTPUBLISHER){
+            System.out.println("PUBLISHER: ");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTRELEASEDATE){
+            System.out.println("RELEASE DATE: ");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTFORMAT){
+            System.out.println("FORMAT: ");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTADDDATE){
+            System.out.println("ADD DATE: ");
+        }
+        else if(infoMessage==CommandType.ADDFROMINPUTCREATOR){
+            System.out.println("CREATOR(s): ");
+        }
+        else if (infoMessage==CommandType.ADDAGAIN){
+            System.out.println("1: Add another\n" +
+                    "2: Continue");
+        }
         else if(infoMessage==CommandType.REMOVE){
             System.out.println("You have selected to remove a comic from your personal collection...");
         }
@@ -88,26 +116,57 @@ public class PTUI {
         }
         else if(infoMessage==CommandType.MARK){
             System.out.println("1: Grade a comic\n" +
-                    "2: Slab a comic");
+                    "2: Slab a comic\n" +
+                    "3: Sign a comic\n" +
+                    "4: Authenticate a comic");
+        }
+        else if(infoMessage==CommandType.MARKGRADEDVALUE){
+            System.out.println("ENTER A GRADE VALUE (1-10):");
+        }
+        else if(infoMessage==CommandType.MARKGRADEDVALUEINVALID){
+            System.out.println("INVALID ENTRY...\nMust be a number 1-10");
         }
         else if(infoMessage==CommandType.MARKGRADED){
-            System.out.println("Enter the ID of the comic you would like to grade along with the grade value...\n" +
-                    "Your entry should match this format: 'ID:GRADEVALUE'");
+            System.out.println("Enter the ID of the comic you would like to grade:");
         }
         else if(infoMessage==CommandType.MARKSLABBED){
-            System.out.println("Enter the ID of the comic you would like to slab...");
+            System.out.println("Enter the ID of the comic you would like to slab:");
         }
-
+        else if(infoMessage==CommandType.MARKSIGN){
+            System.out.println("Enter the ID of the comic you would like to sign:");
+        }
+        else if(infoMessage==CommandType.MARKAUTHENTICATE){
+            System.out.println("Enter the ID of the comic you would like to authenticate:");
+        }
         else if(infoMessage==CommandType.BROWSE){
-            System.out.println("Search through your personal collection...\n" +
-                    "1: Entire Collection\n" +
-                    "2: Publishers\n" +
-                    "3: Series\n" +
-                    "4: Volumes\n" +
-                    "5: Issues");
+            System.out.println("""
+                    Search through your personal collection...
+                    1: Entire Collection
+                    2: Publishers
+                    3: Series
+                    4: Volumes
+                    5: Issues
+                    6: Graded Comics
+                    7: Slabbed Comics
+                    8: Signed Comics
+                    9: Authenticated Comics
+                    10: Runs
+                    11: Gaps""");
         }
         else if(infoMessage==CommandType.BROWSECOLLECTION){
             System.out.println("Displaying your entire collection...");
+        }
+        else if(infoMessage==CommandType.BROWSEGRADED){
+            System.out.println("Displaying all graded comics in your collection...");
+        }
+        else if(infoMessage==CommandType.BROWSESLABBED){
+            System.out.println("Displaying all slabbed comics in your collection...");
+        }
+        else if(infoMessage==CommandType.BROWSESIGNED){
+            System.out.println("Displaying all signed comics in your collection...");
+        }
+        else if(infoMessage==CommandType.BROWSEAUTHENTICATED){
+            System.out.println("Displaying all authenticated comics in your collection...");
         }
         else if(infoMessage==CommandType.BROWSEPUBLISHERS){
             System.out.println("Enter the name of the Publisher you would like to search for\n" +
@@ -118,12 +177,18 @@ public class PTUI {
                     "Series:");
         }
         else if(infoMessage==CommandType.BROWSEVOLUMES){
-            System.out.println("Enter the name of the Volume you would like to search for\n" +
-                    "Series:");
+            System.out.println("Enter the number of the Volume you would like to search for\n" +
+                    "Volume:");
         }
         else if(infoMessage==CommandType.BROWSEISSUES){
             System.out.println("Enter the name of the Issue you would like to search for\n" +
-                    "Series:");
+                    "Issue:");
+        }
+        else if(infoMessage==CommandType.BROWSERUNS){
+            System.out.println("Displaying all Runs in your collection...");
+        }
+        else if(infoMessage==CommandType.BROWSEGAPS){
+            System.out.println("Displaying all Gaps in your collection...");
         }
         else if(infoMessage.equals("7")){
 

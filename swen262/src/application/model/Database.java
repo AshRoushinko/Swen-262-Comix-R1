@@ -2,7 +2,7 @@ package model;
 //Purpose - An Interface that defines all necessary functionality for database type objects (User and Comix Database)
 public interface Database {
 
-    public void sort(String filters);//FOR BROWSING DATABASE
+    public void sort();//FOR BROWSING DATABASE
 
     public void parse(String filename);//Parses the Database
 

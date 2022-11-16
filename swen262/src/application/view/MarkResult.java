@@ -2,6 +2,7 @@ package view;
 
 import controller.Command;
 import controller.CommandType;
+import controller.Mark;
 import model.Comic;
 
 import java.util.Iterator;
@@ -9,12 +10,45 @@ import java.util.Iterator;
 public class MarkResult extends Result{
     @Override
     public String visit(Command command) {
-        String result = "";
-        if (command.commandType==CommandType.MARKSLABBED){
-            result = result+ "THE FOLLOWING COMIC HAS BEEN SLABBED\n";
+        Mark markCommandCast;
+        if (command instanceof Mark){
+            markCommandCast = (Mark) command;
         }
         else{
-            result = result+ "THE FOLLOWING COMIC HAS BEEN GRADED\n";
+            markCommandCast = null;
+        }
+        String result = "";
+        if (command.commandType==CommandType.MARKSLABBED){
+            if (markCommandCast.isApplied()){
+                result = result+ "THE FOLLOWING COMIC HAS BEEN SLABBED\n";
+            }
+            else{
+                result = result+"UNABLE TO SLAB COMIC\n";
+            }
+        }
+        else if (command.commandType==CommandType.MARKSIGN){
+            if (markCommandCast.isApplied()){
+                result = result+ "THE FOLLOWING COMIC HAS BEEN SIGNED\n";
+            }
+            else{
+                result = result+ "UNABLE TO SIGN COMIC\n";
+            }
+        }
+        else if (command.commandType==CommandType.MARKAUTHENTICATE){
+            if (markCommandCast.isApplied()){
+                result = result+ "THE FOLLOWING COMIC HAS BEEN AUTHENTICATED\n";
+            }
+            else{
+                result = result+ "UNABLE TO AUTHENTICATE COMIC\n";
+            }
+        }
+        else{
+            if (markCommandCast.isApplied()){
+                result = result+ "THE FOLLOWING COMIC HAS BEEN GRADED\n";
+            }
+            else{
+                result = result+ "UNABLE TO GRADE COMIC\n";
+            }
         }
         Iterator<Comic> comicIterator = command.getCollection().iterator();
         while (comicIterator.hasNext()){

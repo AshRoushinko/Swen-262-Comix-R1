@@ -9,6 +9,7 @@ import view.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class Browse extends Command{
@@ -30,30 +31,102 @@ public class Browse extends Command{
         browseResult = new ArrayList<>();
         Iterator<Series> seriesIterator = uc.getComiccollection().iterator();
         while (seriesIterator.hasNext()){
-            Iterator<Comic> comicIterator = seriesIterator.next().getComics().iterator();
-            while (comicIterator.hasNext()){
-                Comic currComic = comicIterator.next();
-                if (commandType==CommandType.BROWSECOLLECTION){
-                    browseResult.add(currComic);
+            Series currSeries = seriesIterator.next();
+            if (commandType==CommandType.BROWSERUNS){
+                Iterator<Comic> comicIterator = currSeries.getComics().iterator();
+                Boolean isRun = false;
+                int iterate = 0;
+                int currID = 0;
+                ArrayList<Integer> ids = new ArrayList<>();
+                while(comicIterator.hasNext()){
+                        ids.add(Integer.parseInt(comicIterator.next().getID()));
                 }
-                else if (commandType==CommandType.BROWSESERIES){
-                    if(currComic.getSeries().contains(info)){
-                        browseResult.add(currComic);
+                Collections.sort(ids);
+                for (int i = 0; i<ids.size(); i++){
+                    if (currID==0){
+                        currID = ids.get(i);
+                        iterate++;
+                    }
+                    else{
+                        if (ids.get(i)-currID==1){
+                            iterate++;
+                            currID = ids.get(i);
+                        }
+                        else{
+                            iterate = 0;
+                            currID = 0;
+                        }
+                        if (iterate>=12){
+                            isRun = true;
+                        }
+                        else{
+
+                        }
                     }
                 }
-                else if (commandType==CommandType.BROWSEISSUES){
-                    if(currComic.getIssue().contains(info)){
-                        browseResult.add(currComic);
+                if (isRun){
+                    browseResult.addAll(currSeries.getComics());
+                }
+            }
+            else if (commandType==CommandType.BROWSEGAPS){
+                if (currSeries.getComics().size()>=10){
+                    Series seriesFromDB = db.getSeries(currSeries.getName());
+                    if (seriesFromDB==null){
+
+                    }
+                    else{
+                        if (seriesFromDB.getComics().size()>=12){
+                            browseResult.addAll(currSeries.getComics());
+                        }
                     }
                 }
-                else if (commandType==CommandType.BROWSEVOLUMES){
-                    if(currComic.getTitle().contains(info)){
+            }
+            else{
+                Iterator<Comic> comicIterator = currSeries.getComics().iterator();
+                while (comicIterator.hasNext()){
+                    Comic currComic = comicIterator.next();
+                    if (commandType==CommandType.BROWSECOLLECTION){
                         browseResult.add(currComic);
                     }
-                }
-                else{
-                    if(currComic.getPublisher().contains(info)){
-                        browseResult.add(currComic);
+                    else if (commandType==CommandType.BROWSESERIES){
+                        if(currComic.getSeries().contains(info)){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSEISSUES){
+                        if(currComic.getIssue().contains(info)){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSEVOLUMES){
+                        if(currComic.getTitle().contains(info)){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSEPUBLISHERS){
+                        if(currComic.getPublisher().contains(info)){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSEGRADED){
+                        if (currComic.isGraded()){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSESLABBED){
+                        if (currComic.isSlabbed()){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSESIGNED){
+                        if (currComic.isSigned()){
+                            browseResult.add(currComic);
+                        }
+                    }
+                    else if (commandType==CommandType.BROWSEAUTHENTICATED){
+                        if (currComic.isAuthenticated()){
+                            browseResult.add(currComic);
+                        }
                     }
                 }
             }

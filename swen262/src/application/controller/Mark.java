@@ -17,6 +17,7 @@ public class Mark extends Command{
     private String resultString;
     private String id;
     private String value;
+    private Boolean applied;
     //------------------------------------------------------------------------------------------------------------------
     //STRING INFO FORMAT: (IF GRADED)'ID:GRADEVALUE' ||| (IF SLABBED)'ID'
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
@@ -31,27 +32,37 @@ public class Mark extends Command{
     @Override
     public Collection<Comic> run() {
         markResult = new ArrayList<>();
+        Comic comicToMark;
         if (commandType==CommandType.MARKGRADED){//TODO handle case where book is already graded
             String[] gradeinfosplit = info.split(":");
             id = gradeinfosplit[0];
             value = gradeinfosplit[1];
-            System.out.println("ID: "+id);
-            System.out.println("Value: "+value);
-            Comic comicToMark = uc.getComic(id);
-            comicToMark.grade(value);
-            markResult.add(comicToMark);
+            comicToMark = uc.getComic(id);
+            applied = comicToMark.grade(value);
+        }
+        else if (commandType==CommandType.MARKSIGN){
+            comicToMark = uc.getComic(info);
+            applied = comicToMark.sign();
+        }
+        else if (commandType==CommandType.MARKAUTHENTICATE){
+            comicToMark = uc.getComic(info);
+            applied = comicToMark.authenticate();
         }
         else{//SLABBED //TODO handle case where book is already slabbed or not graded
-            Comic comicToMark = uc.getComic(info);
-            comicToMark.slab();
-            markResult.add(comicToMark);
+            comicToMark = uc.getComic(info);
+            applied = comicToMark.slab();
         }
+        markResult.add(comicToMark);
         Result markResultVisitor = new MarkResult();
         setResultString(getResult(markResultVisitor));
         return markResult;
     }
     //------------------------------------------------------------------------------------------------------------------
     //RESULT METHODS
+    public Boolean isApplied(){
+        return applied;
+    }
+
     @Override
     public Collection<Comic> getCollection() {
         return markResult;
@@ -64,11 +75,20 @@ public class Mark extends Command{
 
     @Override
     public String undo() {
-        if (commandType==CommandType.MARKGRADED){
-            uc.getComic(id).ungrade();
-        }
-        else if (commandType==CommandType.MARKSLABBED){
-            uc.getComic(info).unslabb();
+        if (applied){
+            if (commandType==CommandType.MARKGRADED){
+                uc.getComic(id).ungrade();
+            }
+            else if (commandType==CommandType.MARKSLABBED){
+                uc.getComic(info).unslabb();
+            }
+            else if (commandType==CommandType.MARKSIGN){
+                uc.getComic(info).unsign();
+            }
+            else if (commandType==CommandType.MARKAUTHENTICATE){
+                uc.getComic(info).unAuthenticate();
+            }
+            applied = false;
         }
         return "Undid mark";
     }
