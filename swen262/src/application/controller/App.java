@@ -13,20 +13,18 @@ public class App {
 
     private final String FILEPATH = "swen262/comics.csv";
 
-
-    private Stack commandHistory;
-
     private ComixDatabase db;
     private User user;
     private PTUI view;
     private Scanner input;
 
-    private Stack<Command> commandList;
+    private Stack<Command> commandHistory;
+    private Stack<Command> redoList;
 
     private Boolean running;
 
     public App(){
-        System.out.println("APP STARTED");
+        init();
     }
 
     //TODO add a signin command (Store each profile in one csv file) SIGNOUT COMMAND WILL STORE THE PROFILE.
@@ -46,6 +44,12 @@ public class App {
                 running = false;
                 break;
             }
+            else if (commandType==CommandType.ERROR){
+                commandArgs = "ERROR";
+            }
+            else if (commandType==CommandType.UNDO||commandType==CommandType.REDO){
+                commandArgs = "";
+            }
             else{
                 commandArgs = input.nextLine();//Search criteria
             }
@@ -58,26 +62,41 @@ public class App {
             else if (commandType==CommandType.SEARCHSERIES||commandType==CommandType.SEARCHISSUE||commandType==CommandType.SEARCHTITLE||commandType==CommandType.SEARCHPUBLISHER||commandType==CommandType.SEARCHADDDATE||commandType==CommandType.SEARCHCREATORS){
                 String commandInfo = "";
                 String searchCriteria = commandArgs;
-                if (searchCriteria.equals("1")){
-                    commandInfo = commandInfo+"EXACT";
-                    if (commandType==CommandType.SEARCHCREATORS){
-                        view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                while(true) {
+                    while (true) {
+                        commandInfo = "";
+                        if (searchCriteria.equals("1")) {
+                            commandInfo = commandInfo + "EXACT";
+                            if (commandType == CommandType.SEARCHCREATORS) {
+                                view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                            }
+                            view.handleCommandSelection(CommandType.SEARCHEXACT);
+                            break;
+                        } else if (searchCriteria.equals("2")) {
+                            commandInfo = commandInfo + "PARTIAL";
+                            if (commandType == CommandType.SEARCHCREATORS) {
+                                view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                            }
+                            view.handleCommandSelection(CommandType.SEARCHPARTIAL);
+                            break;
+                        } else {
+                            view.handleCommandSelection(CommandType.ERROR);
+                            view.handleCommandSelection(CommandType.SEARCH);
+                            searchCriteria = input.nextLine();
+                        }
                     }
-                    view.handleCommandSelection(CommandType.SEARCHEXACT);
-                }
-                else if (searchCriteria.equals("2")){
-                    commandInfo = commandInfo+"PARTIAL";
-                    if (commandType==CommandType.SEARCHCREATORS){
-                        view.handleCommandSelection(CommandType.SEARCHCREATORS);
+                    Scanner searchCriteriaSelectionScanner = new Scanner(System.in);
+                    String searchCriteriaSelection = searchCriteriaSelectionScanner.nextLine();
+                    commandInfo = commandInfo+":"+searchCriteriaSelection;
+                    if (commandInfo.split(":").length>2){
+                        view.handleCommandSelection(CommandType.ERROR);
+                        view.handleCommandSelection(CommandType.SEARCH);
+                        searchCriteria = input.nextLine();
                     }
-                    view.handleCommandSelection(CommandType.SEARCHPARTIAL);
+                    else{
+                        break;
+                    }
                 }
-                else{
-                    System.out.print("Invalid entry"); //TODO
-                }
-                Scanner searchCriteriaSelectionScanner = new Scanner(System.in);
-                String searchCriteriaSelection = searchCriteriaSelectionScanner.nextLine();
-                commandInfo = commandInfo+":"+searchCriteriaSelection;
                 Command currCommand = new Search(commandType, commandInfo, db, user);
                 runCommand(currCommand);
             }
@@ -125,10 +144,7 @@ public class App {
                 System.out.println("");
                 Command currCommand = new AddFromDB(commandType, addSelection, db, user);
                 runCommand(currCommand);
-
-                //TODO
-                //commandHistory.add(currCommand);
-
+                commandHistory.push(currCommand);
             }
             else if (commandType==CommandType.ADDFROMINPUT){
                 //TODO
@@ -152,9 +168,7 @@ public class App {
                 newComicstr = newComicstr+":"+input.nextLine();
                 Command currCommand = new AddFromInput(commandType, newComicstr, db, user);
                 runCommand(currCommand);
-
-                //TODO
-                //commandHistory.add(currCommand);
+                commandHistory.push(currCommand);
             }
             //----------------------------------------------------------------------------------------------------------
             // BROWSE
@@ -194,8 +208,7 @@ public class App {
                 String editCriteria = editScanner.nextLine();
                 Command currCommand = new Edit(commandType,editCriteria,db,user);
                 runCommand(currCommand);
-
-                //commandHistory.add(currCommand);
+                commandHistory.push(currCommand);
             }
 
             //----------------------------------------------------------------------------------------------------------
@@ -222,6 +235,7 @@ public class App {
                 String removeCriteria = removeScanner.nextLine();
                 Command currCommand = new Remove(commandType, removeCriteria, db, user);
                 runCommand(currCommand);
+                commandHistory.push(currCommand);
             }
 
             //----------------------------------------------------------------------------------------------------------
@@ -252,10 +266,81 @@ public class App {
                 String markCriteria = markScanner.nextLine();
                 Command currCommand = new Mark(commandType, markCriteria, db, user);
                 runCommand(currCommand);
+                commandHistory.push(currCommand);
             }
 
             //----------------------------------------------------------------------------------------------------------
             //STORE PROFILE
+
+
+            //----------------------------------------------------------------------------------------------------------
+            //UNDO
+            else if (commandType==CommandType.UNDO){
+                Command currCommand = commandHistory.pop();
+                if (currCommand.commandType==CommandType.ADDFROMINPUT||currCommand.commandType==CommandType.ADDFROMDB){
+                    view.handleCommandSelection(CommandType.UNDOADD);
+                }
+                else if (currCommand.commandType==CommandType.EDITSERIES||currCommand.commandType==CommandType.EDITISSUE||currCommand.commandType==CommandType.EDITTITLE||currCommand.commandType==CommandType.EDITDESCRIPTION||currCommand.commandType==CommandType.EDITRELEASEDATE||currCommand.commandType==CommandType.EDITFORMAT||currCommand.commandType==CommandType.EDITPUBLISHER||currCommand.commandType==CommandType.EDITADDDATE||currCommand.commandType==CommandType.EDITCREATORS){
+                    view.handleCommandSelection(CommandType.UNDOEDIT);
+                }
+                else if (currCommand.commandType==CommandType.REMOVESELECT){
+                    view.handleCommandSelection(CommandType.UNDOREMOVE);
+                }
+                else if (currCommand.commandType==CommandType.MARKGRADED||currCommand.commandType==CommandType.MARKSLABBED){
+                    view.handleCommandSelection(CommandType.UNDOMARK);
+                }
+                else{
+
+                }
+                view.handleCommandSelection(CommandType.UNDOCONFIRM);
+                Scanner undoSelectScanner = new Scanner(System.in);
+                String undoInput = undoSelectScanner.nextLine();
+                if (undoInput.equals("1")){
+                    currCommand.undo();
+                    redoList.push(currCommand);
+                }
+                else{
+                    commandHistory.push(currCommand);
+                }
+                view.handleCommandSelection(CommandType.UNDOCOMPLETE);
+            }
+            //----------------------------------------------------------------------------------------------------------
+            //REDO
+            else if (commandType==CommandType.REDO){
+                Command currCommand = redoList.pop();
+                if (currCommand.commandType==CommandType.ADDFROMINPUT||currCommand.commandType==CommandType.ADDFROMDB){
+                    view.handleCommandSelection(CommandType.REDOADD);
+                }
+                else if (currCommand.commandType==CommandType.EDITSERIES||currCommand.commandType==CommandType.EDITISSUE||currCommand.commandType==CommandType.EDITTITLE||currCommand.commandType==CommandType.EDITDESCRIPTION||currCommand.commandType==CommandType.EDITRELEASEDATE||currCommand.commandType==CommandType.EDITFORMAT||currCommand.commandType==CommandType.EDITPUBLISHER||currCommand.commandType==CommandType.EDITADDDATE||currCommand.commandType==CommandType.EDITCREATORS){
+                    view.handleCommandSelection(CommandType.REDOEDIT);
+                }
+                else if (currCommand.commandType==CommandType.REMOVESELECT){
+                    view.handleCommandSelection(CommandType.REDOREMOVE);
+                }
+                else if (currCommand.commandType==CommandType.MARKGRADED||currCommand.commandType==CommandType.MARKSLABBED){
+                    view.handleCommandSelection(CommandType.REDOMARK);
+                }
+                else{
+
+                }
+                view.handleCommandSelection(CommandType.REDOCONFIRM);
+                Scanner redoSelectScanner = new Scanner(System.in);
+                String redoInput = redoSelectScanner.nextLine();
+                if (redoInput.equals("1")){
+                    currCommand.run();
+                    commandHistory.push(currCommand);
+                }
+                else{
+                    redoList.push(currCommand);
+                }
+                view.handleCommandSelection(CommandType.REDOCOMPLETE);
+            }
+
+            //----------------------------------------------------------------------------------------------------------
+            //ERROR
+            else if (commandType==CommandType.ERROR){
+                view.handleCommandSelection(CommandType.ERROR);
+            }
 
 
             else{
@@ -318,20 +403,24 @@ public class App {
             //----------------------------------------------------------------------------------------------------------
             //ADD
             else if(userInput.equals("2")){
-                view.handleCommandSelection(CommandType.ADD);
-                String addTypeInput = input.nextLine();
                 firstE = false;
-                if (addTypeInput.equals("1")){
-                    commandCode = CommandType.ADDFROMDB;
-                    view.handleCommandSelection(CommandType.ADDSELECT);
-                }
-                else if (addTypeInput.equals("2")){
-                    commandCode = CommandType.ADDFROMINPUT;
-                    view.handleCommandSelection(commandCode);
-                }
-                else{
-                    commandCode = CommandType.ERROR;
-                    view.handleCommandSelection(commandCode);
+                while(true){
+                    view.handleCommandSelection(CommandType.ADD);
+                    String addTypeInput = input.nextLine();
+                    if (addTypeInput.equals("1")){
+                        commandCode = CommandType.ADDFROMDB;
+                        view.handleCommandSelection(CommandType.ADDSELECT);
+                        break;
+                    }
+                    else if (addTypeInput.equals("2")){
+                        commandCode = CommandType.ADDFROMINPUT;
+                        view.handleCommandSelection(commandCode);
+                        break;
+                    }
+                    else{
+                        commandCode = CommandType.ERROR;
+                        view.handleCommandSelection(commandCode);
+                    }
                 }
             }
             //----------------------------------------------------------------------------------------------------------
@@ -440,11 +529,36 @@ public class App {
                 view.handleCommandSelection(commandCode);
             }
             //----------------------------------------------------------------------------------------------------------
+            //UNDO
+            else if (userInput.equals("9")){
+                firstE = false;
+                if (commandHistory.isEmpty()){
+                    commandCode= CommandType.ERROR;
+                    view.handleCommandSelection(CommandType.UNDOEMPTY);
+                }
+                else{
+                    commandCode=CommandType.UNDO;
+                    view.handleCommandSelection(commandCode);
+                }
+            }
+            //----------------------------------------------------------------------------------------------------------
+            //REDO
+            else if (userInput.equals("10")){
+                firstE = false;
+                if (redoList.isEmpty()){
+                    commandCode= CommandType.ERROR;
+                    view.handleCommandSelection(CommandType.REDOEMPTY);
+                }
+                else{
+                    commandCode=CommandType.REDO;
+                    view.handleCommandSelection(commandCode);
+                }
+            }
+            //----------------------------------------------------------------------------------------------------------
             //ERROR
             else{
                 firstE = false;
                 commandCode = CommandType.ERROR;
-                view.handleCommandSelection(commandCode);
             }
         }
         if (commandCode==null){
@@ -462,13 +576,8 @@ public class App {
         db = new ComixDatabase(FILEPATH);
         view = new PTUI();
         user = new User();
-        //System.out.println("Creating command history stack");
-        //commandHistory = new Stack<Command>();
-        //System.out.println("Successfully created command history stack");
-    }
-
-    public void process(){
-        //TODO this method will process the commands sent from the PTUI. Allows for all other methods to be private
+        commandHistory = new Stack<Command>();
+        redoList = new Stack<Command>();
     }
 
 }

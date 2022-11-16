@@ -14,6 +14,7 @@ public class AddFromInput extends Command{
     //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> addResult;
     private String resultString;
+    private String id;
     //------------------------------------------------------------------------------------------------------------------
     //STRING INFO FORMAT: 'Series:Issue:Title:Description:Publisher:ReleaseDate:Format:AddDate:Creator(s)'
     public AddFromInput(CommandType type, String info, ComixDatabase db, User uc) {
@@ -22,7 +23,7 @@ public class AddFromInput extends Command{
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
-
+        id = ""+uc.getCurrentNextID();
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override
@@ -44,7 +45,7 @@ public class AddFromInput extends Command{
 
         creators.add(currComicCreators);//TODO
 
-        Comic comicToAdd = new Comic(""+uc.getCurrentNextID(),currComicSeries,currComicIssue,currComicTitle,currComicDescription,currComicPublisher,currComicReleaseDate,currComicFormat,currComicAddDate,creators);
+        Comic comicToAdd = new Comic(id,currComicSeries,currComicIssue,currComicTitle,currComicDescription,currComicPublisher,currComicReleaseDate,currComicFormat,currComicAddDate,creators);
 
         uc.addCustomComicToUser(comicToAdd);
 
@@ -68,7 +69,8 @@ public class AddFromInput extends Command{
 
     @Override
     public String undo() {
-        return null;
+        uc.removeComic(id);
+        return "Undid the add command";
     }
 
     @Override

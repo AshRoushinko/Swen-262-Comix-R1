@@ -15,6 +15,8 @@ public class Mark extends Command{
     //------------------------------------------------------------------------------------------------------------------
     private Collection<Comic> markResult;
     private String resultString;
+    private String id;
+    private String value;
     //------------------------------------------------------------------------------------------------------------------
     //STRING INFO FORMAT: (IF GRADED)'ID:GRADEVALUE' ||| (IF SLABBED)'ID'
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
@@ -31,8 +33,8 @@ public class Mark extends Command{
         markResult = new ArrayList<>();
         if (commandType==CommandType.MARKGRADED){//TODO handle case where book is already graded
             String[] gradeinfosplit = info.split(":");
-            String id = gradeinfosplit[0];
-            String value = gradeinfosplit[1];
+            id = gradeinfosplit[0];
+            value = gradeinfosplit[1];
             System.out.println("ID: "+id);
             System.out.println("Value: "+value);
             Comic comicToMark = uc.getComic(id);
@@ -62,7 +64,13 @@ public class Mark extends Command{
 
     @Override
     public String undo() {
-        return null;
+        if (commandType==CommandType.MARKGRADED){
+            uc.getComic(id).ungrade();
+        }
+        else if (commandType==CommandType.MARKSLABBED){
+            uc.getComic(info).unslabb();
+        }
+        return "Undid mark";
     }
 
     @Override

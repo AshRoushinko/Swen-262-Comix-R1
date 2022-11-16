@@ -54,7 +54,8 @@ public class AddFromDB extends Command{
 
     @Override
     public String undo() {
-        return null;
+        uc.removeComic(info);
+        return "Undid the add command";
     }
 
     @Override

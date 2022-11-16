@@ -129,19 +129,80 @@ public class PTUI {
 
         }
         else if(infoMessage==CommandType.CLOSEPROGRAM){
-            System.out.print("STOPPING PROGRAM..");
-
+            System.out.println("STOPPING PROGRAM..");
+        }
+        else if (infoMessage==CommandType.UNDOEMPTY){
+            System.out.println("No commands to undo");
+        }
+        else if (infoMessage==CommandType.UNDO){
+            System.out.println("Loading last command...");
+        }
+        else if (infoMessage==CommandType.UNDOADD){
+            System.out.println("Last undo-able command was an ADD command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.UNDOREMOVE){
+            System.out.println("Last undo-able command was a REMOVE command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.UNDOEDIT){
+            System.out.println("Last undo-able command was a EDIT command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.UNDOMARK){
+            System.out.println("Last undo-able command was a MARK command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.UNDOCONFIRM){
+            System.out.println("1: Confirm\n" +
+                    "2: CANCEL");
+        }
+        else if (infoMessage==CommandType.UNDOCOMPLETE){
+            System.out.println("Command successfully undone");
+        }
+        else if (infoMessage==CommandType.REDOEMPTY){
+            System.out.println("No commands to redo");
+        }
+        else if (infoMessage==CommandType.REDO){
+            System.out.println("Loading last command...");
+        }
+        else if (infoMessage==CommandType.REDOADD){
+            System.out.println("Last redo-able command was an ADD command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.REDOREMOVE){
+            System.out.println("Last redo-able command was a REMOVE command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.REDOEDIT){
+            System.out.println("Last redo-able command was a EDIT command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.REDOMARK){
+            System.out.println("Last redo-able command was a MARK command...\n" +
+                    "Are you sure you want to undo?");
+        }
+        else if (infoMessage==CommandType.REDOCONFIRM){
+            System.out.println("1: Confirm\n" +
+                    "2: CANCEL");
+        }
+        else if (infoMessage==CommandType.REDOCOMPLETE){
+            System.out.println("Command successfully redone");
         }
         else if(infoMessage==CommandType.CONTINUE){
-            System.out.println("1: Search Database for Comics\n" +
-                    "2: Add to Collection\n" +
-                    "3: Remove from Collection\n" +
-                    "4: Edit Comic in Collection\n" +
-                    "5: Mark Comic in Collection\n" +
-                    "6: Browse Personal Collection\n" +
-                    "7: Store Profile\n" +
-                    "8: Close Program\n\n" +
-                    "INPUT: ");
+            System.out.println("""
+                    1: Search Database for Comics
+                    2: Add to Collection
+                    3: Remove from Collection
+                    4: Edit Comic in Collection
+                    5: Mark Comic in Collection
+                    6: Browse Personal Collection
+                    7: Store Profile
+                    8: Close Program
+                    9: Undo Last Command
+                    10: Redo Last Command
+
+                    INPUT:\s""");
         }
         //--------------------------------------------------------------------------------------------------------------
         //Run command info messages
@@ -149,6 +210,9 @@ public class PTUI {
         //    System.out.println("\nSearch Results: \n" +
         //            "-----------------------------------------------------------------------------------------------------------------------------------"+infoMessage.substring(1));
         //}
+        else if (infoMessage==CommandType.START){
+            System.out.println("APP STARTED");
+        }
         else{
             System.out.println("Invalid Entry\nPlease try again...\n");
         }
@@ -159,18 +223,23 @@ public class PTUI {
     }
 
     private void init(){
-        System.out.println("--WELCOME TO COMIX!!!--\n" +
-                "A comic book database...\n\n" +
-                "Enter the number of the desired command.\nHere are a list of commands:\n" +
-                "1: Search Database for Comics\n" +
-                "2: Add to Collection\n" +
-                "3: Remove from Collection\n" +
-                "4: Edit Comic in Collection\n" +
-                "5: Mark Comic in Collection\n" +
-                "6: Browse Personal Collection\n" +
-                "7: Store Profile\n" +
-                "8: Close Program\n\n" +
-                "INPUT: ");
+        handleCommandSelection(CommandType.START);
+        System.out.println("""
+                --WELCOME TO COMIX!!!--
+                A comic book database...
+
+                Enter the number of the desired command.
+                Here are a list of commands:
+                1: Search Database for Comics
+                2: Add to Collection
+                3: Remove from Collection
+                4: Edit Comic in Collection
+                5: Mark Comic in Collection
+                6: Browse Personal Collection
+                7: Store Profile
+                8: Close Program
+
+                INPUT:\s""");
 
         //TODO print a list of all the commands the user can use and implement. Command info will be sent back to the App class
 

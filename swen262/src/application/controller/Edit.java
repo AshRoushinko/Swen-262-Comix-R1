@@ -17,6 +17,8 @@ public class Edit extends Command{
     private Collection<Comic> editResult;
     private String resultString;
     private String id;
+    private Comic original;
+    private String value;
     //------------------------------------------------------------------------------------------------------------------
     //STRING INFO FORMAT: 'ID:CHANGEVALUE'
     public Edit(CommandType type, String info, ComixDatabase db, User uc) {
@@ -25,11 +27,12 @@ public class Edit extends Command{
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
-        //STRING INFO EXAMPLE: "312:Batman"
-        //String id = 312
-        //String editvalue = "Batman"
-        //comic.setSeries(editvalue);
-        //comic.setTitle(editvalue);
+        String[] editValueSplit = info.split(":");
+        id = editValueSplit[0];
+        value = editValueSplit[1];
+        Comic temp =  uc.getComic(id);
+        original = temp.copy();
+        //OR JUST STORE THE ORIGINAL VALUE OF THE CHANGED ATTRIBUTE
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override

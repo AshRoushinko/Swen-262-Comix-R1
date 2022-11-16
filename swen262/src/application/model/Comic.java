@@ -183,4 +183,24 @@ public class Comic {
             }
         }
     }
+    public Comic copy(){
+        Comic copy = new Comic(id,series,issue,title,description,publisher,releaseDate,addDate,format,creators);
+        if (isGraded()){
+            copy.isGraded = true;
+        }
+        if (isSlabbed()){
+            copy.isSlabbed = true;
+        }
+        return copy;
+    }
+    public Boolean ungrade(){
+        isGraded = false;
+        value = 0.0;
+        return true;
+    }
+    public Boolean unslabb(){
+        isSlabbed = false;
+        value = value/2.0;
+        return true;
+    }
 }
