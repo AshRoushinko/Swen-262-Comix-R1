@@ -48,7 +48,45 @@ public class Edit extends Command{
         //Then add it back to the user collection with uc.addComicToUser(Comic)
         //I made a test that will print whats in the users collection down below
         //Use the comic I hard coded in. It's ID is 1
-
+        Comic curr = uc.getComic(id);
+        if(commandType == CommandType.EDITSERIES){
+            curr.setSeries(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITISSUE){
+            curr.setIssue(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITTITLE){
+            curr.setTitle(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITDESCRIPTION){
+            curr.setDescription(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITPUBLISHER){
+            curr.setPublisher(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITRELEASEDATE){
+            curr.setReleaseDate(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITFORMAT){
+            curr.setFormat(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITADDDATE){
+            curr.setAddDate(value);
+            editResult.add(curr);
+        }
+        else if(commandType == CommandType.EDITCREATORS){
+            ArrayList<String> creators = new ArrayList<>();
+            creators.add(value);
+            curr.setCreators(creators);
+            editResult.add(curr);
+        }
 
 
         //TODO - this is a test, delete when the edit command is fully functional
