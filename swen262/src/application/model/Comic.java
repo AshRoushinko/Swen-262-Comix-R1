@@ -10,6 +10,7 @@ public class Comic {
     private double value;
     private int signatures;
     private int authenticatedsignatures;
+    private int gradeValue;
     //------------------------------------------------------------------------------------------------------------------
     private Boolean isGraded;
     private Boolean isSlabbed;
@@ -90,6 +91,28 @@ public class Comic {
         this.publisher = publisher;
     }
 
+    public void setIsGraded(){
+        isGraded = true;
+    }
+    public void setIsSigned(){
+        isSigned = true;
+    }
+    public void setIsSlabbed(){
+        isGraded = true;
+    }
+    public void setIsAuthenticated(){
+        isAuthenticated = true;
+    }
+    public void setGradeValue(int d){
+        gradeValue = d;
+    }
+    public void setNumSigned(int num){
+        this.signatures = num;
+    }
+    public void setNumAuthenticated(int num){
+        this.authenticatedsignatures = num;
+    }
+
     //GETTERS --------------------------------
     public String getID(){
         return id;
@@ -133,6 +156,24 @@ public class Comic {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getCreatorsParseString(){
+        String returnString = "";
+        for (int i = 0; i < creators.size()-1; i++){
+            returnString = returnString+creators.get(i)+"|";
+        }
+        returnString = returnString+creators.get(creators.size()-1);
+        return returnString;
+    }
+    public String getGradedValue(){
+        return this.gradeValue+"";
+    }
+    public String getSignedNum(){
+        return ""+signatures;
+    }
+    public String getAuthenticatedNum(){
+        return ""+authenticatedsignatures;
     }
 
     //VIEW METHODS ---------------------------------
@@ -181,7 +222,7 @@ public class Comic {
         if (isGraded()){
             return false;
         }
-        int gradeValue = Integer.parseInt(num);
+        gradeValue = Integer.parseInt(num);
         value = 0.1*gradeValue;
         isGraded = true;
         if (isSigned()) {

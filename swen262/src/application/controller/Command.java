@@ -6,6 +6,7 @@ import model.Series;
 import model.User;
 import view.Result;
 
+import java.io.IOException;
 import java.util.Collection;
 
 //Purpose - An abstract class that defines necessary functionality for commands. (Uses the Command Pattern)
@@ -43,7 +44,7 @@ public abstract class Command {
      * Purpose - This method runs the command and performs operations based on the constructor parameters and type of command
      * @return - Each command involves one or more comics; This returns a collection of all comics involved in the process
      */
-    public abstract Collection<Comic> run();
+    public abstract Collection<Comic> run() throws IOException;
 
     /**
      * Purpose - Provides the Collection found from running the command

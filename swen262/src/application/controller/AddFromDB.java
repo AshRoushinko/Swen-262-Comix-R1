@@ -41,9 +41,6 @@ public class AddFromDB extends Command{
             addResult.add(currComic);
             added = true;
         }
-
-            //TODO add a case where there is no matching comic for the id the user entered.
-
         Result addResultVisitor = new AddResult();
         setResultString(getResult(addResultVisitor));
         return addResult;
@@ -80,4 +77,6 @@ public class AddFromDB extends Command{
     public String toString() {
         return resultString;
     }
+
+    //TODO FIX SEARCH AND BROWSE FOR COMMANDS THAT USE THEM
 }

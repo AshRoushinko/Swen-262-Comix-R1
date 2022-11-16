@@ -21,6 +21,11 @@ public class MarkResult extends Result{
         if (command.commandType==CommandType.MARKSLABBED){
             if (markCommandCast.isApplied()){
                 result = result+ "THE FOLLOWING COMIC HAS BEEN SLABBED\n";
+                Iterator<Comic> comicIterator = command.getCollection().iterator();
+                while (comicIterator.hasNext()){
+                    result = result+comicIterator.next().toString();
+                }
+                return buildString(result);
             }
             else{
                 result = result+"UNABLE TO SLAB COMIC\n";
@@ -29,6 +34,11 @@ public class MarkResult extends Result{
         else if (command.commandType==CommandType.MARKSIGN){
             if (markCommandCast.isApplied()){
                 result = result+ "THE FOLLOWING COMIC HAS BEEN SIGNED\n";
+                Iterator<Comic> comicIterator = command.getCollection().iterator();
+                while (comicIterator.hasNext()){
+                    result = result+comicIterator.next().toString();
+                }
+                return buildString(result);
             }
             else{
                 result = result+ "UNABLE TO SIGN COMIC\n";
@@ -37,6 +47,11 @@ public class MarkResult extends Result{
         else if (command.commandType==CommandType.MARKAUTHENTICATE){
             if (markCommandCast.isApplied()){
                 result = result+ "THE FOLLOWING COMIC HAS BEEN AUTHENTICATED\n";
+                Iterator<Comic> comicIterator = command.getCollection().iterator();
+                while (comicIterator.hasNext()){
+                    result = result+comicIterator.next().toString();
+                }
+                return buildString(result);
             }
             else{
                 result = result+ "UNABLE TO AUTHENTICATE COMIC\n";
@@ -45,14 +60,15 @@ public class MarkResult extends Result{
         else{
             if (markCommandCast.isApplied()){
                 result = result+ "THE FOLLOWING COMIC HAS BEEN GRADED\n";
+                Iterator<Comic> comicIterator = command.getCollection().iterator();
+                while (comicIterator.hasNext()){
+                    result = result+comicIterator.next().toString();
+                }
+                return buildString(result);
             }
             else{
                 result = result+ "UNABLE TO GRADE COMIC\n";
             }
-        }
-        Iterator<Comic> comicIterator = command.getCollection().iterator();
-        while (comicIterator.hasNext()){
-            result = result+comicIterator.next().toString();
         }
         return buildString(result);
     }

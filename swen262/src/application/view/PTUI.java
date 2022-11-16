@@ -303,6 +303,28 @@ public class PTUI {
         else if (infoMessage==CommandType.GUEST){
             System.out.println("Signing in as guest...");
         }
+        else if (infoMessage==CommandType.STOREPROFILESELECT){
+            System.out.println("Choose New File Type...\n" +
+                    "1: CSV\n" +
+                    "2: XML\n" +
+                    "3: JSON");
+        }
+        else if (infoMessage==CommandType.STOREPROFILESELECTCSV){
+            System.out.println("Current File Type is CSV...\n" +
+                    "1: Change File Type\n" +
+                    "2: Continue");
+
+        }
+        else if (infoMessage==CommandType.STOREPROFILESELECTXML){
+            System.out.println("Current File Type is XML...\n" +
+                    "1: Change File Type\n" +
+                    "2: Continue");
+        }
+        else if (infoMessage==CommandType.STOREPROFILESELECTJSON){
+            System.out.println("Current File Type is JSON...\n" +
+                    "1: Change File Type\n" +
+                    "2: Continue");
+        }
         //--------------------------------------------------------------------------------------------------------------
         //Run command info messages
         //else if(infoMessage.substring(0,1).equals("S")){

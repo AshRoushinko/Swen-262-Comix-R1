@@ -22,11 +22,12 @@ public class Mark extends Command{
     //STRING INFO FORMAT: (IF GRADED)'ID:GRADEVALUE' ||| (IF SLABBED)'ID'
     public Mark(CommandType type, String info, ComixDatabase db, User uc) {
         super(type, info, db, uc);
+        init(type,info,db,uc);
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public void init(CommandType commandType, String info, ComixDatabase db, User uc) {
-
+        applied = false;
     }
     //------------------------------------------------------------------------------------------------------------------
     @Override
@@ -38,19 +39,38 @@ public class Mark extends Command{
             id = gradeinfosplit[0];
             value = gradeinfosplit[1];
             comicToMark = uc.getComic(id);
-            applied = comicToMark.grade(value);
+            if (comicToMark==null){
+            }
+            else{
+                applied = comicToMark.grade(value);
+            }
         }
         else if (commandType==CommandType.MARKSIGN){
             comicToMark = uc.getComic(info);
-            applied = comicToMark.sign();
+            if (comicToMark==null){
+
+            }
+            else{
+                applied = comicToMark.sign();
+            }
         }
         else if (commandType==CommandType.MARKAUTHENTICATE){
             comicToMark = uc.getComic(info);
-            applied = comicToMark.authenticate();
+            if (comicToMark==null){
+
+            }
+            else{
+                applied = comicToMark.authenticate();
+            }
         }
         else{//SLABBED //TODO handle case where book is already slabbed or not graded
             comicToMark = uc.getComic(info);
-            applied = comicToMark.slab();
+            if (comicToMark==null){
+
+            }
+            else{
+                applied = comicToMark.slab();
+            }
         }
         markResult.add(comicToMark);
         Result markResultVisitor = new MarkResult();

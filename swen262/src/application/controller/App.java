@@ -1,14 +1,22 @@
 package controller;
 
+import com.opencsv.CSVWriter;
 import model.ComixDatabase;
 import model.User;
 import view.PTUI;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class App {
 
     private final String FILEPATH = "swen262/comics.csv";
+
+    private final String FILEPATHUSER = "swen262/user.csv";
+    ProfileFileType filetype = ProfileFileType.CSV;
 
     private ComixDatabase db;
     private User user;
@@ -24,12 +32,11 @@ public class App {
 
     private UserState userState;
 
-    public App(){
+    public App() throws FileNotFoundException {
         init();
     }
 
-    //TODO add a signin command (Store each profile in one csv file) SIGNOUT COMMAND WILL STORE THE PROFILE.
-    public void run(){
+    public void run() throws IOException {
         running = true;
         while (running){
             input = new Scanner(System.in);
@@ -89,7 +96,7 @@ public class App {
                     Scanner searchCriteriaSelectionScanner = new Scanner(System.in);
                     String searchCriteriaSelection = searchCriteriaSelectionScanner.nextLine();
                     commandInfo = commandInfo+":"+searchCriteriaSelection;
-                    if (commandInfo.split(":").length>2){
+                    if (commandInfo.split(":").length>3){
                         view.handleCommandSelection(CommandType.ERROR);
                         view.handleCommandSelection(CommandType.SEARCH);
                         searchCriteria = input.nextLine();
@@ -296,8 +303,38 @@ public class App {
 
             //----------------------------------------------------------------------------------------------------------
             //STORE PROFILE
-
-
+            else if (commandType==CommandType.STOREPROFILESELECTCSV||commandType==CommandType.STOREPROFILESELECTXML||commandType==CommandType.STOREPROFILESELECTJSON){
+                if (commandArgs.equals("1")){
+                    view.handleCommandSelection(CommandType.STOREPROFILESELECT);
+                    Scanner newFileTypeScanner = new Scanner(System.in);
+                    String newFileTypeSelection = newFileTypeScanner.nextLine();
+                    if (newFileTypeSelection.equals("1")){
+                        commandType = CommandType.STOREPROFILESELECTCSV;
+                        //filetype = ProfileFileType.CSV;
+                    }
+                    else if (newFileTypeSelection.equals("2")){
+                        commandType = CommandType.STOREPROFILESELECTXML;
+                        //filetype = ProfileFileType.XML;
+                    }
+                    else{
+                        commandType = CommandType.STOREPROFILESELECTJSON;
+                        //filetype = ProfileFileType.JSON;
+                    }
+                }
+                else{
+                    if (commandType==CommandType.STOREPROFILESELECTCSV){
+                        //filetype = ProfileFileType.CSV;
+                    }
+                    else if (commandType==CommandType.STOREPROFILESELECTXML){
+                        //filetype = ProfileFileType.XML;
+                    }
+                    else{
+                        //filetype = ProfileFileType.JSON;
+                    }
+                }
+                Command currCommand = new StoreProfile(commandType,FILEPATHUSER,db,user);
+                runCommand(currCommand);
+            }
             //----------------------------------------------------------------------------------------------------------
             //UNDO
             else if (commandType==CommandType.UNDO){
@@ -682,7 +719,16 @@ public class App {
                 }
                 else{
                     firstE = false;
-                    commandCode = CommandType.STOREPROFILE;
+                    if (filetype==ProfileFileType.CSV){
+                        commandCode = CommandType.STOREPROFILESELECTCSV;
+                    }
+                    else if (filetype==ProfileFileType.XML){
+                        commandCode = CommandType.STOREPROFILESELECTXML;
+                    }
+                    else{
+                        commandCode = CommandType.STOREPROFILESELECTJSON;
+                    }
+                    view.handleCommandSelection(commandCode);
                 }
             }
             //----------------------------------------------------------------------------------------------------------
@@ -747,18 +793,25 @@ public class App {
         return commandCode;
     }
 
-    private void runCommand(Command command){
+    private void runCommand(Command command) throws IOException {
         command.run();
         view.display(command);
     }
 
-    public void init(){
+    public void init() throws FileNotFoundException {
         db = new ComixDatabase(FILEPATH);
         view = new PTUI();
         user = new User();
         commandHistory = new Stack<Command>();
         redoList = new Stack<Command>();
         this.userState = UserState.START;
+        //File comicfiletype = new File("swen262/userfiletype.csv");//Creates file object for the scanner to read/iterate through
+        //Scanner fileScanner = new Scanner(comicfiletype);
+        //String filetypeget = fileScanner.nextLine();
+
+        user.parse(FILEPATHUSER);
+
+
     }
 
 }

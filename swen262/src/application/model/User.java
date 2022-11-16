@@ -1,6 +1,15 @@
 package model;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import controller.ProfileFileType;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 //Purpose - This class represents the user object and includes all functionality relating to editing the users collection
@@ -8,6 +17,7 @@ public class User implements Database{
     //------------------------------------------------------------------------------------------------------------------
     Collection<Series> userCollection;//AN ARRAY LIST OF SERIES, EACH SERIES HAS AN ARRAY LIST OF COMICS (seriesname.getComics()); will return the list of comics in the series.
     public int currentNextID;
+    private ProfileFileType fileType;
     //------------------------------------------------------------------------------------------------------------------
     //Constructor
     public User(){
@@ -24,8 +34,38 @@ public class User implements Database{
     }
 
     @Override
-    public void parse(String filename) {
-        //TODO STORE THE CURRENT NEXT ID IN THE FILE AND UPDATE IT WHEN PARSING FILE
+    public void parse(String filename) throws FileNotFoundException {
+            File file = new File(filename);
+            FileReader csvInput = new FileReader(file);
+            CSVReader reader = new CSVReader(csvInput);
+            Iterator<String[]> readerIterator = reader.iterator();
+            readerIterator.next();//GET RID OF HEADERS
+            while(readerIterator.hasNext()) {
+                String[] currComicData = readerIterator.next();
+                String[] ccCreators = currComicData[9].split("\\|");
+                ArrayList<String> currComicCreatorData = new ArrayList<>();
+                currComicCreatorData.addAll(Arrays.asList(ccCreators));
+                Comic currComic = new Comic(currComicData[0], currComicData[1], currComicData[2], currComicData[3], currComicData[4], currComicData[5], currComicData[6], currComicData[7], currComicData[8], currComicCreatorData);
+                currComic.setValue(Double.parseDouble(currComicData[10]));
+                if (currComicData[11].equals("true")) {
+                    currComic.setIsGraded();
+                    currComic.setGradeValue(Integer.parseInt(currComicData[12]));
+                }
+                if (currComicData[13].equals("true")) {
+                    currComic.setIsSlabbed();
+                }
+                if (currComicData[14].equals("true")) {
+                    currComic.setIsSigned();
+                    currComic.setNumSigned(Integer.parseInt(currComicData[15]));
+                }
+                if (currComicData[16].equals("true")) {
+                    currComic.setIsAuthenticated();
+                    currComic.setNumAuthenticated(Integer.parseInt(currComicData[17]));
+                }
+                addComicToUser(currComic);
+            }
+
+
     }
 
     @Override
@@ -45,7 +85,6 @@ public class User implements Database{
                 return currSeries;
             }
         }
-        System.out.println("No series with the provided name");
         return null;
     }
 
@@ -101,5 +140,13 @@ public class User implements Database{
 
     private void addSeries(Series series){
         userCollection.add(series);
+    }
+    //FILE -------------------------------
+    private ProfileFileType getFileType(){
+        return this.fileType;
+    }
+
+    private void setFileType(ProfileFileType ft){
+        this.fileType = ft;
     }
 }

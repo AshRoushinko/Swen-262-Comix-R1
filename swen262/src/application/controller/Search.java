@@ -29,13 +29,13 @@ public class Search extends Command {
     //------------------------------------------------------------------------------------------------------------------
     @Override
     public Collection<Comic> run() {
-        //TODO Only looks through titles, needs to look through the other fields as well
-        //TODO if the input is nothing it will loop through the error message
         searchResult = new ArrayList<>();
         String[] searchType = info.split(":");
         String exactOrPartial = searchType[0];
-        String searchCriteria = searchType[1];
-        System.out.println(searchCriteria);
+        String searchCriteria = "";
+        for (int x = 1; x<searchType.length; x++){
+            searchCriteria = searchCriteria + searchType[x];
+        }
         Iterator<Series> sCollection = db.getComicCollection().iterator();
         while(sCollection.hasNext()){
             Iterator<Comic> cCollection = sCollection.next().getComics().iterator();
