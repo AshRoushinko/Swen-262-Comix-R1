@@ -1,11 +1,8 @@
 package controller;
 
-import model.Comic;
 import model.ComixDatabase;
 import model.User;
 import view.PTUI;
-import view.Result;
-import view.SearchResult;
 
 import java.util.*;
 
@@ -18,19 +15,20 @@ public class App {
     private PTUI view;
     private Scanner input;
 
+    private final String PASSWORD = "password";
+
     private Stack<Command> commandHistory;
     private Stack<Command> redoList;
 
     private Boolean running;
+
+    private UserState userState;
 
     public App(){
         init();
     }
 
     //TODO add a signin command (Store each profile in one csv file) SIGNOUT COMMAND WILL STORE THE PROFILE.
-
-    //TODO add functionality for undoing a command
-
     public void run(){
         running = true;
         while (running){
@@ -48,6 +46,9 @@ public class App {
                 commandArgs = "ERROR";
             }
             else if (commandType==CommandType.UNDO||commandType==CommandType.REDO){
+                commandArgs = "";
+            }
+            else if (commandType==CommandType.GUEST){
                 commandArgs = "";
             }
             else{
@@ -335,19 +336,43 @@ public class App {
                     redoList.push(currCommand);
                 }
             }
-
+            //----------------------------------------------------------------------------------------------------------
+            //SIGNIN
+            else if (commandType==CommandType.SIGNIN){
+                String signInattempt = commandArgs;
+                if (signInattempt.equals(PASSWORD)){
+                    userState = UserState.AUTHENTICATED;
+                    view.handleCommandSelection(CommandType.SIGNINSUCCESS);
+                }
+                else{
+                    view.handleCommandSelection(CommandType.SIGNINFAIL);
+                }
+            }
+            //----------------------------------------------------------------------------------------------------------
+            //GUEST
+            else if (commandType==CommandType.GUEST){
+                //view.handleCommandSelection(CommandType.);
+            }
             //----------------------------------------------------------------------------------------------------------
             //ERROR
             else if (commandType==CommandType.ERROR){
                 view.handleCommandSelection(CommandType.ERROR);
             }
-
-
             else{
                 System.out.println("Command type not recognized\n" +
                         "COMMAND TYPE: "+commandType);
             }
-            view.handleCommandSelection(CommandType.CONTINUE);
+            //----------------------------------------------------------------------------------------------------------
+            //CONTINUE
+            if (userState==UserState.START){
+                view.handleCommandSelection(CommandType.CONTINUESTART);
+            }
+            else if (userState==UserState.GUEST){
+                view.handleCommandSelection(CommandType.CONTINUEGUEST);
+            }
+            else{
+                view.handleCommandSelection(CommandType.CONTINUEAUTHENTICATED);
+            }
         }
     }
 
@@ -366,192 +391,282 @@ public class App {
             //----------------------------------------------------------------------------------------------------------
             //SEARCH
             if (userInput.equals("1")||forced==ForceCommand.SEARCH){
-                view.handleCommandSelection(CommandType.SEARCHSELECT);
-                String searchTypeInput = input.nextLine();
-                if (searchTypeInput.equals("1")){
+                if (userState==UserState.START){
                     firstE = false;
-                    commandCode = CommandType.SEARCHSERIES;
-                }
-                else if (searchTypeInput.equals("2")){
-                    firstE = false;
-                    commandCode = CommandType.SEARCHISSUE;
-                }
-                else if (searchTypeInput.equals("3")){
-                    firstE = false;
-                    commandCode = CommandType.SEARCHTITLE;
-                }
-                else if (searchTypeInput.equals("4")){
-                    firstE = false;
-                    commandCode = CommandType.SEARCHPUBLISHER;
-                }
-                else if (searchTypeInput.equals("5")){
-                    firstE = false;
-                    commandCode = CommandType.SEARCHADDDATE;
-                }
-                else if (searchTypeInput.equals("6")){
-                    firstE = false;
-                    commandCode = CommandType.SEARCHCREATORS;
-                }
-                else{
-                    commandCode = CommandType.ERROR;
+                    commandCode = CommandType.SIGNIN;
                     view.handleCommandSelection(commandCode);
                 }
-                if (!(commandCode==CommandType.ERROR)){
-                    view.handleCommandSelection(CommandType.SEARCH);
+                else{
+                    view.handleCommandSelection(CommandType.SEARCHSELECT);
+                    String searchTypeInput = input.nextLine();
+                    if (searchTypeInput.equals("1")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHSERIES;
+                    }
+                    else if (searchTypeInput.equals("2")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHISSUE;
+                    }
+                    else if (searchTypeInput.equals("3")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHTITLE;
+                    }
+                    else if (searchTypeInput.equals("4")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHPUBLISHER;
+                    }
+                    else if (searchTypeInput.equals("5")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHADDDATE;
+                    }
+                    else if (searchTypeInput.equals("6")){
+                        firstE = false;
+                        commandCode = CommandType.SEARCHCREATORS;
+                    }
+                    else{
+                        commandCode = CommandType.ERROR;
+                        view.handleCommandSelection(commandCode);
+                    }
+                    if (!(commandCode==CommandType.ERROR)){
+                        view.handleCommandSelection(CommandType.SEARCH);
+                    }
                 }
             }
             //----------------------------------------------------------------------------------------------------------
             //ADD
             else if(userInput.equals("2")){
                 firstE = false;
-                while(true){
-                    view.handleCommandSelection(CommandType.ADD);
-                    String addTypeInput = input.nextLine();
-                    if (addTypeInput.equals("1")){
-                        commandCode = CommandType.ADDFROMDB;
-                        view.handleCommandSelection(CommandType.ADDSELECT);
-                        break;
+                if (userState==UserState.START){
+                    firstE = false;
+                    userState = UserState.GUEST;
+                    commandCode = CommandType.GUEST;
+                    view.handleCommandSelection(commandCode);
+                }
+                else if (userState==UserState.GUEST){
+                    firstE = false;
+                    view.handleCommandSelection(CommandType.BROWSE);
+                    String browseTypeInput = input.nextLine();
+                    if (browseTypeInput.equals("1")){
+                        commandCode = CommandType.BROWSECOLLECTION;
                     }
-                    else if (addTypeInput.equals("2")){
-                        commandCode = CommandType.ADDFROMINPUT;
-                        view.handleCommandSelection(commandCode);
-                        break;
+                    else if (browseTypeInput.equals("2")) {
+                        commandCode = CommandType.BROWSEPUBLISHERS;
+                    }
+                    else if (browseTypeInput.equals("3")){
+                        commandCode = CommandType.BROWSESERIES;
+                    }
+                    else if (browseTypeInput.equals("4")){
+                        commandCode = CommandType.BROWSEVOLUMES;
+                    }
+                    else if (browseTypeInput.equals("5")){
+                        commandCode = CommandType.BROWSEISSUES;
                     }
                     else{
                         commandCode = CommandType.ERROR;
-                        view.handleCommandSelection(commandCode);
+                    }
+                    view.handleCommandSelection(commandCode);
+                }
+                else{
+                    while(true){
+                        view.handleCommandSelection(CommandType.ADD);
+                        String addTypeInput = input.nextLine();
+                        if (addTypeInput.equals("1")){
+                            commandCode = CommandType.ADDFROMDB;
+                            view.handleCommandSelection(CommandType.ADDSELECT);
+                            break;
+                        }
+                        else if (addTypeInput.equals("2")){
+                            commandCode = CommandType.ADDFROMINPUT;
+                            view.handleCommandSelection(commandCode);
+                            break;
+                        }
+                        else{
+                            commandCode = CommandType.ERROR;
+                            view.handleCommandSelection(commandCode);
+                        }
                     }
                 }
             }
             //----------------------------------------------------------------------------------------------------------
             //REMOVE
             else if(userInput.equals("3")){
-                firstE = false;
-                commandCode = CommandType.REMOVESELECT;
-                view.handleCommandSelection(CommandType.REMOVE);
-                view.handleCommandSelection(commandCode);
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.CLOSEPROGRAM;
+                    view.handleCommandSelection(commandCode);
+                }
+                else{
+                    firstE = false;
+                    commandCode = CommandType.REMOVESELECT;
+                    view.handleCommandSelection(CommandType.REMOVE);
+                    view.handleCommandSelection(commandCode);
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //EDIT
             else if(userInput.equals("4")){
-                firstE = false;
-                view.handleCommandSelection(CommandType.EDIT);
-                String editTypeInput = input.nextLine();
-                if (editTypeInput.equals("1")){
-                    commandCode = CommandType.EDITSERIES;
-                }
-                else if (editTypeInput.equals("2")){
-                    commandCode = CommandType.EDITISSUE;
-                }
-                else if (editTypeInput.equals("3")){
-                    commandCode = CommandType.EDITTITLE;
-                }
-                else if (editTypeInput.equals("4")){
-                    commandCode = CommandType.EDITDESCRIPTION;
-                }
-                else if (editTypeInput.equals("5")){
-                    commandCode = CommandType.EDITPUBLISHER;
-                }
-                else if (editTypeInput.equals("6")){
-                    commandCode = CommandType.EDITRELEASEDATE;
-                }
-                else if (editTypeInput.equals("7")){
-                    commandCode = CommandType.EDITFORMAT;
-                }
-                else if (editTypeInput.equals("8")){
-                    commandCode = CommandType.EDITADDDATE;
-                }
-                else if (editTypeInput.equals("9")){
-                    commandCode = CommandType.EDITCREATORS;
-                }
-                else{
-                    commandCode = CommandType.ERROR;
+                if (userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.SIGNIN;
                     view.handleCommandSelection(commandCode);
                 }
-                view.handleCommandSelection(CommandType.EDITSELECT);
-
+                else if (userState==UserState.AUTHENTICATED){
+                    firstE = false;
+                    view.handleCommandSelection(CommandType.EDIT);
+                    String editTypeInput = input.nextLine();
+                    if (editTypeInput.equals("1")){
+                        commandCode = CommandType.EDITSERIES;
+                    }
+                    else if (editTypeInput.equals("2")){
+                        commandCode = CommandType.EDITISSUE;
+                    }
+                    else if (editTypeInput.equals("3")){
+                        commandCode = CommandType.EDITTITLE;
+                    }
+                    else if (editTypeInput.equals("4")){
+                        commandCode = CommandType.EDITDESCRIPTION;
+                    }
+                    else if (editTypeInput.equals("5")){
+                        commandCode = CommandType.EDITPUBLISHER;
+                    }
+                    else if (editTypeInput.equals("6")){
+                        commandCode = CommandType.EDITRELEASEDATE;
+                    }
+                    else if (editTypeInput.equals("7")){
+                        commandCode = CommandType.EDITFORMAT;
+                    }
+                    else if (editTypeInput.equals("8")){
+                        commandCode = CommandType.EDITADDDATE;
+                    }
+                    else if (editTypeInput.equals("9")){
+                        commandCode = CommandType.EDITCREATORS;
+                    }
+                    else{
+                        commandCode = CommandType.ERROR;
+                        view.handleCommandSelection(commandCode);
+                    }
+                    view.handleCommandSelection(CommandType.EDITSELECT);
+                }
+                else{
+                    firstE = false;
+                    commandCode = CommandType.ERROR;
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //MARK
             else if(userInput.equals("5")){
                 firstE = false;
-                view.handleCommandSelection(CommandType.MARK);
-                String markTypeInput = input.nextLine();
-                if(markTypeInput.equals("1")){
-                    commandCode = CommandType.MARKGRADED;
-                }
-                else if (markTypeInput.equals("2")){
-                    commandCode = CommandType.MARKSLABBED;
+                if(userState==UserState.START||userState==UserState.GUEST){
+                    commandCode = CommandType.ERROR;
                 }
                 else{
-                    commandCode = CommandType.ERROR;
-                    view.handleCommandSelection(commandCode);
+                    view.handleCommandSelection(CommandType.MARK);
+                    String markTypeInput = input.nextLine();
+                    if(markTypeInput.equals("1")){
+                        commandCode = CommandType.MARKGRADED;
+                    }
+                    else if (markTypeInput.equals("2")){
+                        commandCode = CommandType.MARKSLABBED;
+                    }
+                    else{
+                        commandCode = CommandType.ERROR;
+                        view.handleCommandSelection(commandCode);
+                    }
+                    view.handleCommandSelection(CommandType.EDITSELECT);
                 }
-                view.handleCommandSelection(CommandType.EDITSELECT);
             }
             //----------------------------------------------------------------------------------------------------------
             //BROWSE
             else if(userInput.equals("6")||forced==ForceCommand.BROWSE){
-                firstE = false;
-                view.handleCommandSelection(CommandType.BROWSE);
-                String browseTypeInput = input.nextLine();
-                if (browseTypeInput.equals("1")){
-                    commandCode = CommandType.BROWSECOLLECTION;
-                }
-                else if (browseTypeInput.equals("2")) {
-                    commandCode = CommandType.BROWSEPUBLISHERS;
-                }
-                else if (browseTypeInput.equals("3")){
-                    commandCode = CommandType.BROWSESERIES;
-                }
-                else if (browseTypeInput.equals("4")){
-                    commandCode = CommandType.BROWSEVOLUMES;
-                }
-                else if (browseTypeInput.equals("5")){
-                    commandCode = CommandType.BROWSEISSUES;
-                }
-                else{
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
                     commandCode = CommandType.ERROR;
                 }
-                view.handleCommandSelection(commandCode);
+                else{
+                    firstE = false;
+                    view.handleCommandSelection(CommandType.BROWSE);
+                    String browseTypeInput = input.nextLine();
+                    if (browseTypeInput.equals("1")){
+                        commandCode = CommandType.BROWSECOLLECTION;
+                    }
+                    else if (browseTypeInput.equals("2")) {
+                        commandCode = CommandType.BROWSEPUBLISHERS;
+                    }
+                    else if (browseTypeInput.equals("3")){
+                        commandCode = CommandType.BROWSESERIES;
+                    }
+                    else if (browseTypeInput.equals("4")){
+                        commandCode = CommandType.BROWSEVOLUMES;
+                    }
+                    else if (browseTypeInput.equals("5")){
+                        commandCode = CommandType.BROWSEISSUES;
+                    }
+                    else{
+                        commandCode = CommandType.ERROR;
+                    }
+                    view.handleCommandSelection(commandCode);
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //STOREPROFILE
-            else if(userInput.equals("7")){
-                firstE = false;
-                commandCode = CommandType.STOREPROFILE;
+            else if (userInput.equals("7")){
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.ERROR;
+                }
+                else{
+                    firstE = false;
+                    commandCode = CommandType.STOREPROFILE;
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //CLOSEPROGRAM
             else if(userInput.equals("8")){
-                firstE = false;
-                commandCode = CommandType.CLOSEPROGRAM;
-                view.handleCommandSelection(commandCode);
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.ERROR;
+                }
+                else{
+                    firstE = false;
+                    commandCode = CommandType.CLOSEPROGRAM;
+                    view.handleCommandSelection(commandCode);
+                }
             }
             //----------------------------------------------------------------------------------------------------------
             //UNDO
             else if (userInput.equals("9")){
-                firstE = false;
-                if (commandHistory.isEmpty()){
-                    commandCode= CommandType.ERROR;
-                    view.handleCommandSelection(CommandType.UNDOEMPTY);
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.ERROR;
                 }
                 else{
-                    commandCode=CommandType.UNDO;
-                    view.handleCommandSelection(commandCode);
+                    if (commandHistory.isEmpty()){
+                        commandCode= CommandType.ERROR;
+                        view.handleCommandSelection(CommandType.UNDOEMPTY);
+                    }
+                    else{
+                        commandCode=CommandType.UNDO;
+                        view.handleCommandSelection(commandCode);
+                    }
                 }
             }
             //----------------------------------------------------------------------------------------------------------
             //REDO
             else if (userInput.equals("10")){
-                firstE = false;
-                if (redoList.isEmpty()){
-                    commandCode= CommandType.ERROR;
-                    view.handleCommandSelection(CommandType.REDOEMPTY);
+                if (userState==UserState.START||userState==UserState.GUEST){
+                    firstE = false;
+                    commandCode = CommandType.ERROR;
                 }
                 else{
-                    commandCode=CommandType.REDO;
-                    view.handleCommandSelection(commandCode);
+                    firstE = false;
+                    if (redoList.isEmpty()){
+                        commandCode= CommandType.ERROR;
+                        view.handleCommandSelection(CommandType.REDOEMPTY);
+                    }
+                    else{
+                        commandCode=CommandType.REDO;
+                        view.handleCommandSelection(commandCode);
+                    }
                 }
             }
             //----------------------------------------------------------------------------------------------------------
@@ -578,6 +693,7 @@ public class App {
         user = new User();
         commandHistory = new Stack<Command>();
         redoList = new Stack<Command>();
+        this.userState = UserState.START;
     }
 
 }

@@ -189,7 +189,7 @@ public class PTUI {
         else if (infoMessage==CommandType.REDOCOMPLETE){
             System.out.println("Command successfully redone");
         }
-        else if(infoMessage==CommandType.CONTINUE){
+        else if(infoMessage==CommandType.CONTINUEAUTHENTICATED){
             System.out.println("""
                     1: Search Database for Comics
                     2: Add to Collection
@@ -204,6 +204,40 @@ public class PTUI {
 
                     INPUT:\s""");
         }
+        else if(infoMessage==CommandType.CONTINUEGUEST){
+            System.out.println("""
+                    1: Search Database for Comics
+                    2: Browse Personal Collection
+                    3: Close Program
+                    4: Sign in
+
+                    INPUT:\s""");
+        }
+        else if(infoMessage==CommandType.CONTINUESTART){
+            System.out.println("""
+                    Enter the number of the desired command.
+                    Here are a list of commands:
+                    1: Sign in
+                    2: Continue as Guest
+                    3: Close Program
+                    
+                    INPUT:\s""");
+        }
+        else if (infoMessage==CommandType.NOTSIGNIN){
+            System.out.println("You must be signed in to use this command...");
+        }
+        else if (infoMessage==CommandType.SIGNIN){
+            System.out.println("PASSWORD:");
+        }
+        else if (infoMessage==CommandType.SIGNINSUCCESS){
+            System.out.println("WELCOME!!!");
+        }
+        else if (infoMessage==CommandType.SIGNINFAIL){
+            System.out.println("Password incorrect...");
+        }
+        else if (infoMessage==CommandType.GUEST){
+            System.out.println("Signing in as guest...");
+        }
         //--------------------------------------------------------------------------------------------------------------
         //Run command info messages
         //else if(infoMessage.substring(0,1).equals("S")){
@@ -211,7 +245,18 @@ public class PTUI {
         //            "-----------------------------------------------------------------------------------------------------------------------------------"+infoMessage.substring(1));
         //}
         else if (infoMessage==CommandType.START){
-            System.out.println("APP STARTED");
+            System.out.println("""
+                    APP STARTED...
+                    --WELCOME TO COMIX!!!--
+                    A comic book database...
+                    
+                    Enter the number of the desired command.
+                    Here are a list of commands:
+                    1: Sign in
+                    2: Continue as Guest
+                    3: Close Program
+                    
+                    INPUT:\s""");
         }
         else{
             System.out.println("Invalid Entry\nPlease try again...\n");
@@ -224,22 +269,6 @@ public class PTUI {
 
     private void init(){
         handleCommandSelection(CommandType.START);
-        System.out.println("""
-                --WELCOME TO COMIX!!!--
-                A comic book database...
-
-                Enter the number of the desired command.
-                Here are a list of commands:
-                1: Search Database for Comics
-                2: Add to Collection
-                3: Remove from Collection
-                4: Edit Comic in Collection
-                5: Mark Comic in Collection
-                6: Browse Personal Collection
-                7: Store Profile
-                8: Close Program
-
-                INPUT:\s""");
 
         //TODO print a list of all the commands the user can use and implement. Command info will be sent back to the App class
 
